@@ -1,0 +1,1 @@
+run "main method" in appApplication class to start application
