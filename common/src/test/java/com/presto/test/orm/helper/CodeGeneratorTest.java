@@ -51,7 +51,8 @@ public class CodeGeneratorTest {
     @Test
     public void generate() throws Exception {
 //        generateEntity("com.presto.api.user.entity", "u_", "u_user");
-        generateEntity("com.presto.api.user.entity", "u_", "u_invite_code");
+//        generateEntity("com.presto.api.user.entity", "u_", "u_invite_code");
+        generateEntity("com.presto.api.plantBook.entity", "b_", "b_plant_book_req");
 
     }
 
