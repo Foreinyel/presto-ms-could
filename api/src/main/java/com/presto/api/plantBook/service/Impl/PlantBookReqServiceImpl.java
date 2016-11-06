@@ -4,6 +4,7 @@ import com.presto.api.plantBook.dao.PlantBookDao;
 import com.presto.api.plantBook.entity.PlantBookReq;
 import com.presto.api.plantBook.service.PlantBookReqService;
 import com.presto.api.plantBook.vo.PlantBookReqVO;
+import com.presto.common.constants.CommonConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ public class PlantBookReqServiceImpl implements PlantBookReqService {
         plantBookReq.setDeletedFlag(0);
         plantBookReq.setCreatedDate(new Date());
         plantBookReq.setUpdatedDate(new Date());
+        plantBookReq.setStatus(CommonConstants.PlantBookReqStatus.NEW);
 
         plantBookReq.setBookAuthor(vo.getBookAuthor());
         plantBookReq.setBookId(vo.getBookId());

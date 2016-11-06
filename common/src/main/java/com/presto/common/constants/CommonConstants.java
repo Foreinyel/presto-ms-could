@@ -17,4 +17,11 @@ public class CommonConstants {
         public static final int MANUAL = 2; //手工植书
     }
 
+    public static class PlantBookReqStatus{
+        public static final int NEW = 0; //新建
+        public static final int APPROVE = 1; //新建
+        public static final int REJECT = 2; //新建
+
+    }
+
 }

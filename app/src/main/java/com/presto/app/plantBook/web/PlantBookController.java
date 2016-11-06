@@ -35,7 +35,7 @@ public class PlantBookController {
         if(vo.getPlantMethod() == null){
             return JsonResult.failure("植书方式不能为空");
         }else{
-            if(vo.getPlantMethod() == CommonConstants.PlantBookMethod.MANUAL){
+            if(vo.getPlantMethod() == CommonConstants.PlantBookMethod.SEARCH || vo.getPlantMethod() == CommonConstants.PlantBookMethod.QRCODE){
                 if(StringUtils.isBlank(vo.getBookAuthor()) || StringUtils.isBlank(vo.getBookIsbn())
                         || StringUtils.isBlank(vo.getBookName()) || StringUtils.isBlank(vo.getBookPress())){
                     return JsonResult.failure("书籍信息不能为空");
