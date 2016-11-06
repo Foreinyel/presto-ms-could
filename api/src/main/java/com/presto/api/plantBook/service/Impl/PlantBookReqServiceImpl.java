@@ -41,4 +41,11 @@ public class PlantBookReqServiceImpl implements PlantBookReqService {
         return plantBookReq;
     }
 
+    public PlantBookReq plantBookReqApproval(PlantBookReqVO vo){
+        PlantBookReq plantBookReq = plantBookDao.findById(PlantBookReq.class,vo.getId());
+        //1.如果是手动植书,
+        return plantBookReq;
+
+    }
+
 }
