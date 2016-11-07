@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.presto.api.book.entity.Books">
+    <resultMap type="com.presto.api.book.entity.Books" id="result"/>
+    <sql id="select_all_cols">
+        b_books.ID,
+        b_books.book_name as bookName,
+        b_books.book_img_url as bookImgUrl,
+        b_books.book_version as bookVersion,
+        b_books.book_issn as bookIssn,
+        b_books.book_isbn as bookIsbn,
+        b_books.book_asin as bookAsin,
+        b_books.book_author as bookAuthor,
+        b_books.book_desc as bookDesc,
+        b_books.book_price as bookPrice,
+        b_books.book_press as bookPress,
+        b_books.book_url as bookUrl,
+        b_books.book_src as bookSrc,
+        b_books.created_date as createdDate,
+        b_books.updated_date as updatedDate,
+        b_books.created_by as createdBy,
+        b_books.updated_by as updatedBy,
+        b_books.version
+    </sql>
+    <sql id="insert_all_cols">
+        b_books.book_name,
+        b_books.book_img_url,
+        b_books.book_version,
+        b_books.book_issn,
+        b_books.book_isbn,
+        b_books.book_asin,
+        b_books.book_author,
+        b_books.book_desc,
+        b_books.book_price,
+        b_books.book_press,
+        b_books.book_url,
+        b_books.book_src,
+        b_books.deleted_flag,
+        b_books.created_date,
+        b_books.updated_date,
+        b_books.created_by,
+        b_books.updated_by,
+        b_books.version
+    </sql>
+    <sql id="where_all">
+        WHERE b_books.deleted_flag = 0
+        <if test="cond.id != null">
+            AND b_books.id = #{cond.id}
+        </if>
+        <if test="cond.bookName != null">
+            AND b_books.book_name = #{cond.bookName}
+        </if>
+        <if test="cond.bookImgUrl != null">
+            AND b_books.book_img_url = #{cond.bookImgUrl}
+        </if>
+        <if test="cond.bookVersion != null">
+            AND b_books.book_version = #{cond.bookVersion}
+        </if>
+        <if test="cond.bookIssn != null">
+            AND b_books.book_issn = #{cond.bookIssn}
+        </if>
+        <if test="cond.bookIsbn != null">
+            AND b_books.book_isbn = #{cond.bookIsbn}
+        </if>
+        <if test="cond.bookAsin != null">
+            AND b_books.book_asin = #{cond.bookAsin}
+        </if>
+        <if test="cond.bookAuthor != null">
+            AND b_books.book_author = #{cond.bookAuthor}
+        </if>
+        <if test="cond.bookDesc != null">
+            AND b_books.book_desc = #{cond.bookDesc}
+        </if>
+        <if test="cond.bookPrice != null">
+            AND b_books.book_price = #{cond.bookPrice}
+        </if>
+        <if test="cond.bookPress != null">
+            AND b_books.book_press = #{cond.bookPress}
+        </if>
+        <if test="cond.bookUrl != null">
+            AND b_books.book_url = #{cond.bookUrl}
+        </if>
+        <if test="cond.bookSrc != null">
+            AND b_books.book_src = #{cond.bookSrc}
+        </if>
+        <if test="cond.version != null">
+            AND b_books.version = #{cond.version}
+        </if>
+        <if test="cond.ids != null">
+            and b_books.id in
+            <foreach item="item" index="index" collection="cond.ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="cond.createdDateB != null">
+            <![CDATA[AND b_books.created_date >= #{cond.createdDateB}]]>
+        </if>
+        <if test="cond.createdDateE != null">
+            <![CDATA[AND b_books.created_date <= #{cond.createdDateE}]]>
+        </if>
+        <if test="cond.updatedDateB != null">
+            <![CDATA[AND b_books.updated_date >= #{cond.updatedDateB}]]>
+        </if>
+        <if test="cond.updatedDateE != null">
+            <![CDATA[AND b_books.updated_date <= #{cond.updatedDateE}]]>
+        </if>
+    </sql>
+    <select id="select" resultMap="result">
+        select <include refid="select_all_cols"/>
+        FROM b_books
+        WHERE deleted_flag = 0 and b_books.ID=#{id}
+        <if test="lock">
+            FOR UPDATE
+        </if>
+    </select>
+    <select id="query" resultMap="result">
+        select <include refid="select_all_cols"/>
+        FROM b_books
+        <include refid="where_all"/>
+        <if test="start != null">
+            order by b_books.created_date desc
+            limit #{start},#{size}
+        </if>
+    </select>
+    <select id="count" resultType="java.lang.Long">
+        select count(0)
+        FROM b_books
+        <include refid="where_all"/>
+    </select>
+    <select id="sum" resultType="java.math.BigDecimal">
+        select sum(${col})
+        FROM b_books
+        <include refid="where_all"/>
+    </select>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO b_books(
+            <include refid="insert_all_cols"/>
+        ) VALUES (
+        #{bookName},
+        #{bookImgUrl},
+        #{bookVersion},
+        #{bookIssn},
+        #{bookIsbn},
+        #{bookAsin},
+        #{bookAuthor},
+        #{bookDesc},
+        #{bookPrice},
+        #{bookPress},
+        #{bookUrl},
+        #{bookSrc},
+        0,
+        <if test="createdDate == null">
+            current_timestamp(),
+        </if>
+        <if test="createdDate != null">
+            #{createdDate},
+        </if>
+        current_timestamp(),
+        #{createdBy},
+        #{updatedBy},
+        1
+        )
+    </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO b_books(
+            <if test="bookName != null">
+                b_books.book_name,
+            </if>
+            <if test="bookImgUrl != null">
+                b_books.book_img_url,
+            </if>
+            <if test="bookVersion != null">
+                b_books.book_version,
+            </if>
+            <if test="bookIssn != null">
+                b_books.book_issn,
+            </if>
+            <if test="bookIsbn != null">
+                b_books.book_isbn,
+            </if>
+            <if test="bookAsin != null">
+                b_books.book_asin,
+            </if>
+            <if test="bookAuthor != null">
+                b_books.book_author,
+            </if>
+            <if test="bookDesc != null">
+                b_books.book_desc,
+            </if>
+            <if test="bookPrice != null">
+                b_books.book_price,
+            </if>
+            <if test="bookPress != null">
+                b_books.book_press,
+            </if>
+            <if test="bookUrl != null">
+                b_books.book_url,
+            </if>
+            <if test="bookSrc != null">
+                b_books.book_src,
+            </if>
+            b_books.deleted_flag,
+            b_books.created_date,
+            b_books.updated_date,
+            b_books.created_by,
+            b_books.updated_by,
+            b_books.version
+        ) VALUES (
+        <if test="bookName != null">
+            #{bookName},
+        </if>
+        <if test="bookImgUrl != null">
+            #{bookImgUrl},
+        </if>
+        <if test="bookVersion != null">
+            #{bookVersion},
+        </if>
+        <if test="bookIssn != null">
+            #{bookIssn},
+        </if>
+        <if test="bookIsbn != null">
+            #{bookIsbn},
+        </if>
+        <if test="bookAsin != null">
+            #{bookAsin},
+        </if>
+        <if test="bookAuthor != null">
+            #{bookAuthor},
+        </if>
+        <if test="bookDesc != null">
+            #{bookDesc},
+        </if>
+        <if test="bookPrice != null">
+            #{bookPrice},
+        </if>
+        <if test="bookPress != null">
+            #{bookPress},
+        </if>
+        <if test="bookUrl != null">
+            #{bookUrl},
+        </if>
+        <if test="bookSrc != null">
+            #{bookSrc},
+        </if>
+        0,
+        current_timestamp(),
+        current_timestamp(),
+        #{createdBy},
+        #{updatedBy},
+        1
+        )
+    </insert>
+    <insert id="batchInsert">
+        INSERT INTO b_books(
+        <include refid="insert_all_cols" />
+        ) VALUES
+        <foreach item="item" index="index" collection="list" open="" separator="," close="">
+            (
+            #{item.bookName},
+            #{item.bookImgUrl},
+            #{item.bookVersion},
+            #{item.bookIssn},
+            #{item.bookIsbn},
+            #{item.bookAsin},
+            #{item.bookAuthor},
+            #{item.bookDesc},
+            #{item.bookPrice},
+            #{item.bookPress},
+            #{item.bookUrl},
+            #{item.bookSrc},
+            0,
+            current_timestamp(),
+            current_timestamp(),
+            #{item.createdBy},
+            #{item.updatedBy},
+            1
+            )
+        </foreach>
+    </insert>
+    <insert id="insertWithId">
+        INSERT INTO b_books(ID,<include refid="insert_all_cols"/>)
+        VALUES
+        (#{id},
+        #{bookName},
+        #{bookImgUrl},
+        #{bookVersion},
+        #{bookIssn},
+        #{bookIsbn},
+        #{bookAsin},
+        #{bookAuthor},
+        #{bookDesc},
+        #{bookPrice},
+        #{bookPress},
+        #{bookUrl},
+        #{bookSrc},
+        0,
+        current_timestamp(),
+        current_timestamp(),
+        #{createdBy},
+        #{updatedBy},
+        1
+        )
+    </insert>
+    <insert id="batchInsertWithId">
+        INSERT INTO b_books(ID,<include refid="insert_all_cols"/>)
+        VALUES
+        <foreach item="item" index="index" collection="list" open="" separator="," close="">
+            (
+            #{item.id},
+            #{item.bookName},
+            #{item.bookImgUrl},
+            #{item.bookVersion},
+            #{item.bookIssn},
+            #{item.bookIsbn},
+            #{item.bookAsin},
+            #{item.bookAuthor},
+            #{item.bookDesc},
+            #{item.bookPrice},
+            #{item.bookPress},
+            #{item.bookUrl},
+            #{item.bookSrc},
+            0,
+            current_timestamp(),
+            current_timestamp(),
+            #{item.createdBy},
+            #{item.updatedBy},
+            1
+            )
+        </foreach>
+    </insert>
+    <update id="update">
+        update b_books
+        <set>
+            book_name = #{bookName},
+            book_img_url = #{bookImgUrl},
+            book_version = #{bookVersion},
+            book_issn = #{bookIssn},
+            book_isbn = #{bookIsbn},
+            book_asin = #{bookAsin},
+            book_author = #{bookAuthor},
+            book_desc = #{bookDesc},
+            book_price = #{bookPrice},
+            book_press = #{bookPress},
+            book_url = #{bookUrl},
+            book_src = #{bookSrc},
+            version = version + 1,
+            updated_date = current_timestamp(),
+            updated_by=#{updatedBy}
+        </set>
+        where b_books.id = #{id}
+    </update>
+    <update id="updateSelective">
+        update b_books
+        <set>
+            <if test="bookName != null">
+                book_name = #{bookName},
+            </if>
+            <if test="bookImgUrl != null">
+                book_img_url = #{bookImgUrl},
+            </if>
+            <if test="bookVersion != null">
+                book_version = #{bookVersion},
+            </if>
+            <if test="bookIssn != null">
+                book_issn = #{bookIssn},
+            </if>
+            <if test="bookIsbn != null">
+                book_isbn = #{bookIsbn},
+            </if>
+            <if test="bookAsin != null">
+                book_asin = #{bookAsin},
+            </if>
+            <if test="bookAuthor != null">
+                book_author = #{bookAuthor},
+            </if>
+            <if test="bookDesc != null">
+                book_desc = #{bookDesc},
+            </if>
+            <if test="bookPrice != null">
+                book_price = #{bookPrice},
+            </if>
+            <if test="bookPress != null">
+                book_press = #{bookPress},
+            </if>
+            <if test="bookUrl != null">
+                book_url = #{bookUrl},
+            </if>
+            <if test="bookSrc != null">
+                book_src = #{bookSrc},
+            </if>
+            version = version + 1,
+            updated_date = current_timestamp(),
+            updated_by=#{updatedBy}
+        </set>
+        where b_books.id = #{id}
+    </update>
+    <delete id="delete">
+        update b_books set deleted_flag = 1
+        <include refid="where_all"/>
+    </delete>
+    <delete id="deleteById">
+        update b_books set deleted_flag = 1 where b_books.id = #{id}
+    </delete>
+    <delete id="deleteCompletely">
+        delete from b_books
+        <include refid="where_all"/>
+    </delete>
+    <delete id="deleteByIdCompletely">
+        delete from b_books where b_books.id = #{id}
+    </delete>
+</mapper>

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.presto.api.user.entity.InviteCode">
+    <resultMap type="com.presto.api.user.entity.InviteCode" id="result"/>
+    <sql id="select_all_cols">
+        u_invite_code.ID,
+        u_invite_code.code as code,
+        u_invite_code.status as status,
+        u_invite_code.created_date as createdDate,
+        u_invite_code.updated_date as updatedDate,
+        u_invite_code.created_by as createdBy,
+        u_invite_code.updated_by as updatedBy,
+        u_invite_code.version
+    </sql>
+    <sql id="insert_all_cols">
+        u_invite_code.code,
+        u_invite_code.status,
+        u_invite_code.deleted_flag,
+        u_invite_code.created_date,
+        u_invite_code.updated_date,
+        u_invite_code.created_by,
+        u_invite_code.updated_by,
+        u_invite_code.version
+    </sql>
+    <sql id="where_all">
+        WHERE u_invite_code.deleted_flag = 0
+        <if test="cond.id != null">
+            AND u_invite_code.id = #{cond.id}
+        </if>
+        <if test="cond.code != null">
+            AND u_invite_code.code = #{cond.code}
+        </if>
+        <if test="cond.status != null">
+            AND u_invite_code.status = #{cond.status}
+        </if>
+        <if test="cond.statuss != null">
+            AND u_invite_code.status in
+            <foreach item="item" index="index" collection="cond.statuss" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="cond.version != null">
+            AND u_invite_code.version = #{cond.version}
+        </if>
+        <if test="cond.ids != null">
+            and u_invite_code.id in
+            <foreach item="item" index="index" collection="cond.ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="cond.createdDateB != null">
+            <![CDATA[AND u_invite_code.created_date >= #{cond.createdDateB}]]>
+        </if>
+        <if test="cond.createdDateE != null">
+            <![CDATA[AND u_invite_code.created_date <= #{cond.createdDateE}]]>
+        </if>
+        <if test="cond.updatedDateB != null">
+            <![CDATA[AND u_invite_code.updated_date >= #{cond.updatedDateB}]]>
+        </if>
+        <if test="cond.updatedDateE != null">
+            <![CDATA[AND u_invite_code.updated_date <= #{cond.updatedDateE}]]>
+        </if>
+    </sql>
+    <select id="select" resultMap="result">
+        select <include refid="select_all_cols"/>
+        FROM u_invite_code
+        WHERE deleted_flag = 0 and u_invite_code.ID=#{id}
+        <if test="lock">
+            FOR UPDATE
+        </if>
+    </select>
+    <select id="query" resultMap="result">
+        select <include refid="select_all_cols"/>
+        FROM u_invite_code
+        <include refid="where_all"/>
+        <if test="start != null">
+            order by u_invite_code.created_date desc
+            limit #{start},#{size}
+        </if>
+    </select>
+    <select id="count" resultType="java.lang.Long">
+        select count(0)
+        FROM u_invite_code
+        <include refid="where_all"/>
+    </select>
+    <select id="sum" resultType="java.math.BigDecimal">
+        select sum(${col})
+        FROM u_invite_code
+        <include refid="where_all"/>
+    </select>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO u_invite_code(
+            <include refid="insert_all_cols"/>
+        ) VALUES (
+        #{code},
+        #{status},
+        0,
+        <if test="createdDate == null">
+            current_timestamp(),
+        </if>
+        <if test="createdDate != null">
+            #{createdDate},
+        </if>
+        current_timestamp(),
+        #{createdBy},
+        #{updatedBy},
+        1
+        )
+    </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO u_invite_code(
+            <if test="code != null">
+                u_invite_code.code,
+            </if>
+            <if test="status != null">
+                u_invite_code.status,
+            </if>
+            u_invite_code.deleted_flag,
+            u_invite_code.created_date,
+            u_invite_code.updated_date,
+            u_invite_code.created_by,
+            u_invite_code.updated_by,
+            u_invite_code.version
+        ) VALUES (
+        <if test="code != null">
+            #{code},
+        </if>
+        <if test="status != null">
+            #{status},
+        </if>
+        0,
+        current_timestamp(),
+        current_timestamp(),
+        #{createdBy},
+        #{updatedBy},
+        1
+        )
+    </insert>
+    <insert id="batchInsert">
+        INSERT INTO u_invite_code(
+        <include refid="insert_all_cols" />
+        ) VALUES
+        <foreach item="item" index="index" collection="list" open="" separator="," close="">
+            (
+            #{item.code},
+            #{item.status},
+            0,
+            current_timestamp(),
+            current_timestamp(),
+            #{item.createdBy},
+            #{item.updatedBy},
+            1
+            )
+        </foreach>
+    </insert>
+    <insert id="insertWithId">
+        INSERT INTO u_invite_code(ID,<include refid="insert_all_cols"/>)
+        VALUES
+        (#{id},
+        #{code},
+        #{status},
+        0,
+        current_timestamp(),
+        current_timestamp(),
+        #{createdBy},
+        #{updatedBy},
+        1
+        )
+    </insert>
+    <insert id="batchInsertWithId">
+        INSERT INTO u_invite_code(ID,<include refid="insert_all_cols"/>)
+        VALUES
+        <foreach item="item" index="index" collection="list" open="" separator="," close="">
+            (
+            #{item.id},
+            #{item.code},
+            #{item.status},
+            0,
+            current_timestamp(),
+            current_timestamp(),
+            #{item.createdBy},
+            #{item.updatedBy},
+            1
+            )
+        </foreach>
+    </insert>
+    <update id="update">
+        update u_invite_code
+        <set>
+            code = #{code},
+            status = #{status},
+            version = version + 1,
+            updated_date = current_timestamp(),
+            updated_by=#{updatedBy}
+        </set>
+        where u_invite_code.id = #{id}
+    </update>
+    <update id="updateSelective">
+        update u_invite_code
+        <set>
+            <if test="code != null">
+                code = #{code},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            version = version + 1,
+            updated_date = current_timestamp(),
+            updated_by=#{updatedBy}
+        </set>
+        where u_invite_code.id = #{id}
+    </update>
+    <delete id="delete">
+        update u_invite_code set deleted_flag = 1
+        <include refid="where_all"/>
+    </delete>
+    <delete id="deleteById">
+        update u_invite_code set deleted_flag = 1 where u_invite_code.id = #{id}
+    </delete>
+    <delete id="deleteCompletely">
+        delete from u_invite_code
+        <include refid="where_all"/>
+    </delete>
+    <delete id="deleteByIdCompletely">
+        delete from u_invite_code where u_invite_code.id = #{id}
+    </delete>
+</mapper>

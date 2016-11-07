@@ -10,4 +10,5 @@ public interface PlantBookReqService {
 
     PlantBookReq savePlantBookReq(PlantBookReqVO vo);
     PlantBookReq plantBookReqApproval(PlantBookReqVO vo);
+    PlantBookReq plantBookReqReject(PlantBookReqVO vo);
 }

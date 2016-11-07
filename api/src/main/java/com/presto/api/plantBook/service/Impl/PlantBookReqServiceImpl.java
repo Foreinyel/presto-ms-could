@@ -79,8 +79,18 @@ public class PlantBookReqServiceImpl implements PlantBookReqService {
 
         userBookDao.insert(userBook);
 
+        plantBookReq.setStatus(CommonConstants.PlantBookReqStatus.APPROVE);
+        plantBookDao.update(plantBookReq);
+
         return plantBookReq;
 
+    }
+
+    public PlantBookReq plantBookReqReject(PlantBookReqVO vo){
+        PlantBookReq plantBookReq = plantBookDao.findById(PlantBookReq.class, vo.getId());
+        plantBookReq.setStatus(CommonConstants.PlantBookReqStatus.REJECT);
+        plantBookDao.update(plantBookReq);
+        return plantBookReq;
     }
 
 }
