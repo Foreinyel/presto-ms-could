@@ -9,4 +9,5 @@ import com.presto.api.plantBook.vo.PlantBookReqVO;
 public interface PlantBookReqService {
 
     PlantBookReq savePlantBookReq(PlantBookReqVO vo);
+    PlantBookReq plantBookReqApproval(PlantBookReqVO vo);
 }

@@ -12,6 +12,12 @@ CREATE TABLE `presto`.`b_books` (
   `book_press` VARCHAR(45) NULL COMMENT '出版社',
   `book_url` VARCHAR(45) NOT NULL COMMENT '书籍来源url',
   `book_src` VARCHAR(45) NOT NULL COMMENT '书籍来源站点',
+  `deleted_flag` int(1) NOT NULL DEFAULT '0',
+  `created_by` BIGINT(20) NULL COMMENT '',
+  `created_date` DATETIME NULL COMMENT '',
+  `updated_by` BIGINT(20) NULL COMMENT '',
+  `updated_date` DATETIME NULL COMMENT '',
+  `version` BIGINT(20) NULL COMMENT '',
    PRIMARY KEY (id),
    INDEX `idx_book_id` (`id` ASC))
     ENGINE = InnoDB

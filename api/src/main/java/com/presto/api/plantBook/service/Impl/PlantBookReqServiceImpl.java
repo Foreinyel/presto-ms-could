@@ -1,7 +1,11 @@
 package com.presto.api.plantBook.service.Impl;
 
+import com.presto.api.book.dao.BookDao;
+import com.presto.api.book.entity.Books;
 import com.presto.api.plantBook.dao.PlantBookDao;
+import com.presto.api.plantBook.dao.UserBookDao;
 import com.presto.api.plantBook.entity.PlantBookReq;
+import com.presto.api.plantBook.entity.UserBook;
 import com.presto.api.plantBook.service.PlantBookReqService;
 import com.presto.api.plantBook.vo.PlantBookReqVO;
 import com.presto.common.constants.CommonConstants;
@@ -19,7 +23,13 @@ public class PlantBookReqServiceImpl implements PlantBookReqService {
     @Autowired
     private PlantBookDao plantBookDao;
 
-    public PlantBookReq savePlantBookReq(PlantBookReqVO vo){
+    @Autowired
+    private BookDao bookDao;
+
+    @Autowired
+    private UserBookDao userBookDao;
+
+    public PlantBookReq savePlantBookReq(PlantBookReqVO vo) {
         PlantBookReq plantBookReq = new PlantBookReq();
         plantBookReq.setDeletedFlag(0);
         plantBookReq.setCreatedDate(new Date());
@@ -41,9 +51,34 @@ public class PlantBookReqServiceImpl implements PlantBookReqService {
         return plantBookReq;
     }
 
-    public PlantBookReq plantBookReqApproval(PlantBookReqVO vo){
-        PlantBookReq plantBookReq = plantBookDao.findById(PlantBookReq.class,vo.getId());
-        //1.如果是手动植书,
+    public PlantBookReq plantBookReqApproval(PlantBookReqVO vo) {
+        PlantBookReq plantBookReq = plantBookDao.findById(PlantBookReq.class, vo.getId());
+        Long bookId;
+        //1.如果是手动植书,需要先将书籍信息创建到书库表里,再和用户建立关联
+        if (plantBookReq.getPlantMethod() == CommonConstants.PlantBookMethod.MANUAL) {
+            Books books = new Books();
+            books.setBookPress(plantBookReq.getBookPress());
+            books.setBookAuthor(plantBookReq.getBookAuthor());
+            books.setBookName(plantBookReq.getBookName());
+            books.setBookIsbn(plantBookReq.getBookIsbn());
+            books.setBookImgUrl(plantBookReq.getBookImgUrl());
+            bookDao.insert(books);
+
+
+            bookId = books.getId();
+        }else{  //非手动植书,书已在库中
+
+            bookId = plantBookReq.getBookId();
+        }
+
+        UserBook userBook = new UserBook();
+        userBook.setCreatedDate(new Date());
+        userBook.setBookId(bookId);
+        userBook.setUserId(plantBookReq.getUserId());
+        userBook.setUpdatedDate(new Date());
+
+        userBookDao.insert(userBook);
+
         return plantBookReq;
 
     }
