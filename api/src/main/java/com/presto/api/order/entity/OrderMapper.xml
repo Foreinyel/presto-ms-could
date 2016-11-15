@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.presto.api.order.entity.Order">
+    <resultMap type="com.presto.api.order.entity.Order" id="result"/>
+    <sql id="select_all_cols">
+        b_order.ID,
+        b_order.user_id as userId,
+        b_order.status as status,
+        b_order.amount as amount,
+        b_order.date_from as dateFrom,
+        b_order.date_end as dateEnd,
+        b_order.order_date as orderDate,
+        b_order.created_date as createdDate,
+        b_order.updated_date as updatedDate,
+        b_order.created_by as createdBy,
+        b_order.updated_by as updatedBy,
+        b_order.version
+    </sql>
+    <sql id="insert_all_cols">
+        b_order.user_id,
+        b_order.status,
+        b_order.amount,
+        b_order.date_from,
+        b_order.date_end,
+        b_order.order_date,
+        b_order.deleted_flag,
+        b_order.created_date,
+        b_order.updated_date,
+        b_order.created_by,
+        b_order.updated_by,
+        b_order.version
+    </sql>
+    <sql id="where_all">
+        WHERE b_order.deleted_flag = 0
+        <if test="cond.id != null">
+            AND b_order.id = #{cond.id}
+        </if>
+        <if test="cond.userId != null">
+            AND b_order.user_id = #{cond.userId}
+        </if>
+        <if test="cond.status != null">
+            AND b_order.status = #{cond.status}
+        </if>
+        <if test="cond.statuss != null">
+            AND b_order.status in
+            <foreach item="item" index="index" collection="cond.statuss" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="cond.amount != null">
+            AND b_order.amount = #{cond.amount}
+        </if>
+        <if test="cond.dateFrom != null">
+            AND b_order.date_from = #{cond.dateFrom}
+        </if>
+        <if test="cond.dateEnd != null">
+            AND b_order.date_end = #{cond.dateEnd}
+        </if>
+        <if test="cond.orderDate != null">
+            AND b_order.order_date = #{cond.orderDate}
+        </if>
+        <if test="cond.version != null">
+            AND b_order.version = #{cond.version}
+        </if>
+        <if test="cond.ids != null">
+            and b_order.id in
+            <foreach item="item" index="index" collection="cond.ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="cond.createdDateB != null">
+            <![CDATA[AND b_order.created_date >= #{cond.createdDateB}]]>
+        </if>
+        <if test="cond.createdDateE != null">
+            <![CDATA[AND b_order.created_date <= #{cond.createdDateE}]]>
+        </if>
+        <if test="cond.updatedDateB != null">
+            <![CDATA[AND b_order.updated_date >= #{cond.updatedDateB}]]>
+        </if>
+        <if test="cond.updatedDateE != null">
+            <![CDATA[AND b_order.updated_date <= #{cond.updatedDateE}]]>
+        </if>
+    </sql>
+    <select id="select" resultMap="result">
+        select <include refid="select_all_cols"/>
+        FROM b_order
+        WHERE deleted_flag = 0 and b_order.ID=#{id}
+        <if test="lock">
+            FOR UPDATE
+        </if>
+    </select>
+    <select id="query" resultMap="result">
+        select <include refid="select_all_cols"/>
+        FROM b_order
+        <include refid="where_all"/>
+        <if test="start != null">
+            order by b_order.created_date desc
+            limit #{start},#{size}
+        </if>
+    </select>
+    <select id="count" resultType="java.lang.Long">
+        select count(0)
+        FROM b_order
+        <include refid="where_all"/>
+    </select>
+    <select id="sum" resultType="java.math.BigDecimal">
+        select sum(${col})
+        FROM b_order
+        <include refid="where_all"/>
+    </select>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO b_order(
+            <include refid="insert_all_cols"/>
+        ) VALUES (
+        #{userId},
+        #{status},
+        #{amount},
+        #{dateFrom},
+        #{dateEnd},
+        #{orderDate},
+        0,
+        <if test="createdDate == null">
+            current_timestamp(),
+        </if>
+        <if test="createdDate != null">
+            #{createdDate},
+        </if>
+        current_timestamp(),
+        #{createdBy},
+        #{updatedBy},
+        1
+        )
+    </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO b_order(
+            <if test="userId != null">
+                b_order.user_id,
+            </if>
+            <if test="status != null">
+                b_order.status,
+            </if>
+            <if test="amount != null">
+                b_order.amount,
+            </if>
+            <if test="dateFrom != null">
+                b_order.date_from,
+            </if>
+            <if test="dateEnd != null">
+                b_order.date_end,
+            </if>
+            <if test="orderDate != null">
+                b_order.order_date,
+            </if>
+            b_order.deleted_flag,
+            b_order.created_date,
+            b_order.updated_date,
+            b_order.created_by,
+            b_order.updated_by,
+            b_order.version
+        ) VALUES (
+        <if test="userId != null">
+            #{userId},
+        </if>
+        <if test="status != null">
+            #{status},
+        </if>
+        <if test="amount != null">
+            #{amount},
+        </if>
+        <if test="dateFrom != null">
+            #{dateFrom},
+        </if>
+        <if test="dateEnd != null">
+            #{dateEnd},
+        </if>
+        <if test="orderDate != null">
+            #{orderDate},
+        </if>
+        0,
+        current_timestamp(),
+        current_timestamp(),
+        #{createdBy},
+        #{updatedBy},
+        1
+        )
+    </insert>
+    <insert id="batchInsert">
+        INSERT INTO b_order(
+        <include refid="insert_all_cols" />
+        ) VALUES
+        <foreach item="item" index="index" collection="list" open="" separator="," close="">
+            (
+            #{item.userId},
+            #{item.status},
+            #{item.amount},
+            #{item.dateFrom},
+            #{item.dateEnd},
+            #{item.orderDate},
+            0,
+            current_timestamp(),
+            current_timestamp(),
+            #{item.createdBy},
+            #{item.updatedBy},
+            1
+            )
+        </foreach>
+    </insert>
+    <insert id="insertWithId">
+        INSERT INTO b_order(ID,<include refid="insert_all_cols"/>)
+        VALUES
+        (#{id},
+        #{userId},
+        #{status},
+        #{amount},
+        #{dateFrom},
+        #{dateEnd},
+        #{orderDate},
+        0,
+        current_timestamp(),
+        current_timestamp(),
+        #{createdBy},
+        #{updatedBy},
+        1
+        )
+    </insert>
+    <insert id="batchInsertWithId">
+        INSERT INTO b_order(ID,<include refid="insert_all_cols"/>)
+        VALUES
+        <foreach item="item" index="index" collection="list" open="" separator="," close="">
+            (
+            #{item.id},
+            #{item.userId},
+            #{item.status},
+            #{item.amount},
+            #{item.dateFrom},
+            #{item.dateEnd},
+            #{item.orderDate},
+            0,
+            current_timestamp(),
+            current_timestamp(),
+            #{item.createdBy},
+            #{item.updatedBy},
+            1
+            )
+        </foreach>
+    </insert>
+    <update id="update">
+        update b_order
+        <set>
+            user_id = #{userId},
+            status = #{status},
+            amount = #{amount},
+            date_from = #{dateFrom},
+            date_end = #{dateEnd},
+            order_date = #{orderDate},
+            version = version + 1,
+            updated_date = current_timestamp(),
+            updated_by=#{updatedBy}
+        </set>
+        where b_order.id = #{id}
+    </update>
+    <update id="updateSelective">
+        update b_order
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="amount != null">
+                amount = #{amount},
+            </if>
+            <if test="dateFrom != null">
+                date_from = #{dateFrom},
+            </if>
+            <if test="dateEnd != null">
+                date_end = #{dateEnd},
+            </if>
+            <if test="orderDate != null">
+                order_date = #{orderDate},
+            </if>
+            version = version + 1,
+            updated_date = current_timestamp(),
+            updated_by=#{updatedBy}
+        </set>
+        where b_order.id = #{id}
+    </update>
+    <delete id="delete">
+        update b_order set deleted_flag = 1
+        <include refid="where_all"/>
+    </delete>
+    <delete id="deleteById">
+        update b_order set deleted_flag = 1 where b_order.id = #{id}
+    </delete>
+    <delete id="deleteCompletely">
+        delete from b_order
+        <include refid="where_all"/>
+    </delete>
+    <delete id="deleteByIdCompletely">
+        delete from b_order where b_order.id = #{id}
+    </delete>
+</mapper>

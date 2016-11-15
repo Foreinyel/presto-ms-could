@@ -24,4 +24,13 @@ public class CommonConstants {
 
     }
 
+    public static class OrderStatus{
+        public static final int NEW = 0; //新建
+        public static final int PAYING = 10; //待支付
+        public static final int SENDING = 20; //待发货
+        public static final int SEND = 30;    //配送中
+        public static final int READING = 40;   //惜阅中
+        public static final int BACKING = 50;   //待归还
+    }
+
 }

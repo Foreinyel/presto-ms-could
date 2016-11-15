@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.presto.api.order.entity.OrderDetail">
+    <resultMap type="com.presto.api.order.entity.OrderDetail" id="result"/>
+    <sql id="select_all_cols">
+        b_order_detail.ID,
+        b_order_detail.order_id as orderId,
+        b_order_detail.user_book_id as userBookId,
+        b_order_detail.created_date as createdDate,
+        b_order_detail.updated_date as updatedDate,
+        b_order_detail.created_by as createdBy,
+        b_order_detail.updated_by as updatedBy,
+        b_order_detail.version
+    </sql>
+    <sql id="insert_all_cols">
+        b_order_detail.order_id,
+        b_order_detail.user_book_id,
+        b_order_detail.deleted_flag,
+        b_order_detail.created_date,
+        b_order_detail.updated_date,
+        b_order_detail.created_by,
+        b_order_detail.updated_by,
+        b_order_detail.version
+    </sql>
+    <sql id="where_all">
+        WHERE b_order_detail.deleted_flag = 0
+        <if test="cond.id != null">
+            AND b_order_detail.id = #{cond.id}
+        </if>
+        <if test="cond.orderId != null">
+            AND b_order_detail.order_id = #{cond.orderId}
+        </if>
+        <if test="cond.userBookId != null">
+            AND b_order_detail.user_book_id = #{cond.userBookId}
+        </if>
+        <if test="cond.version != null">
+            AND b_order_detail.version = #{cond.version}
+        </if>
+        <if test="cond.ids != null">
+            and b_order_detail.id in
+            <foreach item="item" index="index" collection="cond.ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="cond.createdDateB != null">
+            <![CDATA[AND b_order_detail.created_date >= #{cond.createdDateB}]]>
+        </if>
+        <if test="cond.createdDateE != null">
+            <![CDATA[AND b_order_detail.created_date <= #{cond.createdDateE}]]>
+        </if>
+        <if test="cond.updatedDateB != null">
+            <![CDATA[AND b_order_detail.updated_date >= #{cond.updatedDateB}]]>
+        </if>
+        <if test="cond.updatedDateE != null">
+            <![CDATA[AND b_order_detail.updated_date <= #{cond.updatedDateE}]]>
+        </if>
+    </sql>
+    <select id="select" resultMap="result">
+        select <include refid="select_all_cols"/>
+        FROM b_order_detail
+        WHERE deleted_flag = 0 and b_order_detail.ID=#{id}
+        <if test="lock">
+            FOR UPDATE
+        </if>
+    </select>
+    <select id="query" resultMap="result">
+        select <include refid="select_all_cols"/>
+        FROM b_order_detail
+        <include refid="where_all"/>
+        <if test="start != null">
+            order by b_order_detail.created_date desc
+            limit #{start},#{size}
+        </if>
+    </select>
+    <select id="count" resultType="java.lang.Long">
+        select count(0)
+        FROM b_order_detail
+        <include refid="where_all"/>
+    </select>
+    <select id="sum" resultType="java.math.BigDecimal">
+        select sum(${col})
+        FROM b_order_detail
+        <include refid="where_all"/>
+    </select>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO b_order_detail(
+            <include refid="insert_all_cols"/>
+        ) VALUES (
+        #{orderId},
+        #{userBookId},
+        0,
+        <if test="createdDate == null">
+            current_timestamp(),
+        </if>
+        <if test="createdDate != null">
+            #{createdDate},
+        </if>
+        current_timestamp(),
+        #{createdBy},
+        #{updatedBy},
+        1
+        )
+    </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO b_order_detail(
+            <if test="orderId != null">
+                b_order_detail.order_id,
+            </if>
+            <if test="userBookId != null">
+                b_order_detail.user_book_id,
+            </if>
+            b_order_detail.deleted_flag,
+            b_order_detail.created_date,
+            b_order_detail.updated_date,
+            b_order_detail.created_by,
+            b_order_detail.updated_by,
+            b_order_detail.version
+        ) VALUES (
+        <if test="orderId != null">
+            #{orderId},
+        </if>
+        <if test="userBookId != null">
+            #{userBookId},
+        </if>
+        0,
+        current_timestamp(),
+        current_timestamp(),
+        #{createdBy},
+        #{updatedBy},
+        1
+        )
+    </insert>
+    <insert id="batchInsert">
+        INSERT INTO b_order_detail(
+        <include refid="insert_all_cols" />
+        ) VALUES
+        <foreach item="item" index="index" collection="list" open="" separator="," close="">
+            (
+            #{item.orderId},
+            #{item.userBookId},
+            0,
+            current_timestamp(),
+            current_timestamp(),
+            #{item.createdBy},
+            #{item.updatedBy},
+            1
+            )
+        </foreach>
+    </insert>
+    <insert id="insertWithId">
+        INSERT INTO b_order_detail(ID,<include refid="insert_all_cols"/>)
+        VALUES
+        (#{id},
+        #{orderId},
+        #{userBookId},
+        0,
+        current_timestamp(),
+        current_timestamp(),
+        #{createdBy},
+        #{updatedBy},
+        1
+        )
+    </insert>
+    <insert id="batchInsertWithId">
+        INSERT INTO b_order_detail(ID,<include refid="insert_all_cols"/>)
+        VALUES
+        <foreach item="item" index="index" collection="list" open="" separator="," close="">
+            (
+            #{item.id},
+            #{item.orderId},
+            #{item.userBookId},
+            0,
+            current_timestamp(),
+            current_timestamp(),
+            #{item.createdBy},
+            #{item.updatedBy},
+            1
+            )
+        </foreach>
+    </insert>
+    <update id="update">
+        update b_order_detail
+        <set>
+            order_id = #{orderId},
+            user_book_id = #{userBookId},
+            version = version + 1,
+            updated_date = current_timestamp(),
+            updated_by=#{updatedBy}
+        </set>
+        where b_order_detail.id = #{id}
+    </update>
+    <update id="updateSelective">
+        update b_order_detail
+        <set>
+            <if test="orderId != null">
+                order_id = #{orderId},
+            </if>
+            <if test="userBookId != null">
+                user_book_id = #{userBookId},
+            </if>
+            version = version + 1,
+            updated_date = current_timestamp(),
+            updated_by=#{updatedBy}
+        </set>
+        where b_order_detail.id = #{id}
+    </update>
+    <delete id="delete">
+        update b_order_detail set deleted_flag = 1
+        <include refid="where_all"/>
+    </delete>
+    <delete id="deleteById">
+        update b_order_detail set deleted_flag = 1 where b_order_detail.id = #{id}
+    </delete>
+    <delete id="deleteCompletely">
+        delete from b_order_detail
+        <include refid="where_all"/>
+    </delete>
+    <delete id="deleteByIdCompletely">
+        delete from b_order_detail where b_order_detail.id = #{id}
+    </delete>
+</mapper>

@@ -22,4 +22,7 @@ CREATE TABLE `presto`.`b_books` (
    INDEX `idx_book_id` (`id` ASC))
     ENGINE = InnoDB
 	DEFAULT CHARACTER SET = utf8
-	COMMENT = '书'
+	COMMENT = '书';
+
+ALTER TABLE `presto`.`b_books`
+ADD COLUMN `price` DECIMAL(20,4) NULL DEFAULT 0 COMMENT '书籍价格:￥/day' AFTER `book_src`;

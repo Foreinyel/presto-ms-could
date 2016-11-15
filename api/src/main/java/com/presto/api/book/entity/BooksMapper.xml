@@ -16,6 +16,7 @@
         b_books.book_press as bookPress,
         b_books.book_url as bookUrl,
         b_books.book_src as bookSrc,
+        b_books.price as price,
         b_books.created_date as createdDate,
         b_books.updated_date as updatedDate,
         b_books.created_by as createdBy,
@@ -35,6 +36,7 @@
         b_books.book_press,
         b_books.book_url,
         b_books.book_src,
+        b_books.price,
         b_books.deleted_flag,
         b_books.created_date,
         b_books.updated_date,
@@ -82,6 +84,9 @@
         </if>
         <if test="cond.bookSrc != null">
             AND b_books.book_src = #{cond.bookSrc}
+        </if>
+        <if test="cond.price != null">
+            AND b_books.price = #{cond.price}
         </if>
         <if test="cond.version != null">
             AND b_books.version = #{cond.version}
@@ -148,6 +153,7 @@
         #{bookPress},
         #{bookUrl},
         #{bookSrc},
+        #{price},
         0,
         <if test="createdDate == null">
             current_timestamp(),
@@ -199,6 +205,9 @@
             <if test="bookSrc != null">
                 b_books.book_src,
             </if>
+            <if test="price != null">
+                b_books.price,
+            </if>
             b_books.deleted_flag,
             b_books.created_date,
             b_books.updated_date,
@@ -242,6 +251,9 @@
         <if test="bookSrc != null">
             #{bookSrc},
         </if>
+        <if test="price != null">
+            #{price},
+        </if>
         0,
         current_timestamp(),
         current_timestamp(),
@@ -268,6 +280,7 @@
             #{item.bookPress},
             #{item.bookUrl},
             #{item.bookSrc},
+            #{item.price},
             0,
             current_timestamp(),
             current_timestamp(),
@@ -293,6 +306,7 @@
         #{bookPress},
         #{bookUrl},
         #{bookSrc},
+        #{price},
         0,
         current_timestamp(),
         current_timestamp(),
@@ -319,6 +333,7 @@
             #{item.bookPress},
             #{item.bookUrl},
             #{item.bookSrc},
+            #{item.price},
             0,
             current_timestamp(),
             current_timestamp(),
@@ -343,6 +358,7 @@
             book_press = #{bookPress},
             book_url = #{bookUrl},
             book_src = #{bookSrc},
+            price = #{price},
             version = version + 1,
             updated_date = current_timestamp(),
             updated_by=#{updatedBy}
@@ -387,6 +403,9 @@
             </if>
             <if test="bookSrc != null">
                 book_src = #{bookSrc},
+            </if>
+            <if test="price != null">
+                price = #{price},
             </if>
             version = version + 1,
             updated_date = current_timestamp(),

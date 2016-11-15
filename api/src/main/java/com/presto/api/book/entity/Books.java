@@ -1,6 +1,7 @@
 package com.presto.api.book.entity;
 
 import com.presto.common.dao.BaseEntity;
+import java.math.BigDecimal;
 
 /**
  * 书
@@ -21,6 +22,7 @@ public class Books extends BaseEntity {
     private String bookPress;//出版社
     private String bookUrl;//书籍来源url
     private String bookSrc;//书籍来源站点
+    private BigDecimal price;//书籍价格:￥/day
 
     /**
      * return 书名
@@ -188,5 +190,19 @@ public class Books extends BaseEntity {
      */
     public void setBookSrc(String bookSrc) {
         this.bookSrc = bookSrc;
+    }
+
+    /**
+     * return 书籍价格:￥/day
+     */
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    /**
+     * @param price 书籍价格:￥/day
+     */
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }
