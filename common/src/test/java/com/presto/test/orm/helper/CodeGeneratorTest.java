@@ -54,8 +54,8 @@ public class CodeGeneratorTest {
 //        generateEntity("com.presto.api.user.entity", "u_", "u_invite_code");
 //        generateEntity("com.presto.api.plantBook.entity", "b_", "b_plant_book_req");
 //        generateEntity("com.presto.api.plantBook.entity", "b_", "b_user_book");
-        generateEntity("com.presto.api.book.entity", "b_", "b_books");
-//        generateEntity("com.presto.api.order.entity", "b_", "b_order");
+//        generateEntity("com.presto.api.book.entity", "b_", "b_books");
+        generateEntity("com.presto.api.order.entity", "b_", "b_order");
 //        generateEntity("com.presto.api.order.entity", "b_", "b_order_detail");
 
     }

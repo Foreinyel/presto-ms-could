@@ -31,6 +31,7 @@ public class CommonConstants {
         public static final int SEND = 30;    //配送中
         public static final int READING = 40;   //惜阅中
         public static final int BACKING = 50;   //待归还
+        public static final int DONE = 999;   //完成
     }
 
 }

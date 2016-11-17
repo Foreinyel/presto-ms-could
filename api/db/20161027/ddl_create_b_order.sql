@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS `presto`.`b_order`;
 CREATE TABLE `presto`.`b_order` (
   `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '',
   `user_id` BIGINT(20) NOT NULL COMMENT '',
@@ -6,6 +7,11 @@ CREATE TABLE `presto`.`b_order` (
   `date_from` DATETIME NOT NULL COMMENT '借阅日期从',
   `date_end` DATETIME NOT NULL COMMENT '借阅日期到',
   `order_date` DATETIME NOT NULL COMMENT '下单日期',
+  `pay_date` DATETIME COMMENT '支付日期',
+  `send_date` DATETIME COMMENT '配送日期',
+  `reading_date` DATETIME COMMENT '开始惜阅日期',
+  `backing_date` DATETIME COMMENT '待归还日期',
+  `done_date` DATETIME COMMENT '订单完成日期',
   `deleted_flag` INT(1) NOT NULL DEFAULT 0 COMMENT '',
   `created_by` BIGINT(20) NULL COMMENT '',
   `created_date` DATETIME NULL COMMENT '',

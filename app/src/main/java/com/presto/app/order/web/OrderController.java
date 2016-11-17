@@ -5,10 +5,7 @@ import com.presto.api.order.service.OrderService;
 import com.presto.api.order.vo.OrderVO;
 import com.presto.common.result.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -39,6 +36,17 @@ public class OrderController {
 
         Order order = orderService.createOrder(vo);
         return JsonResult.success(order);
+    }
+
+    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    public JsonResult listOrderByUser(@RequestParam Long userId,@RequestParam Integer status){
+        if(userId == null){
+            return JsonResult.failure("用户ID不能为空");
+        }
+        OrderVO vo = new OrderVO();
+        vo.setUserId(userId);
+        vo.setStatus(status);
+        return JsonResult.success(orderService.findOrdersByUser(vo));
     }
 
 }

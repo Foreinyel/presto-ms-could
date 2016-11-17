@@ -13,12 +13,17 @@ import java.util.Date;
 public class Order extends BaseEntity {
     private static final long serialVersionUID = 1L;
     private Long userId;//
-    private Integer status;//订单状态:0-新建；10-待支付;20-待发货;30-配送中;40-惜阅中;50-待归还;
-    transient private List<Integer> statuss;//订单状态:0-新建；10-待支付;20-待发货;30-配送中;40-惜阅中;50-待归还;
+    private Integer status;//订单状态:0-新建;10-待支付;20-待发货;30-配送中;40-惜阅中;50-待归还;
+    transient private List<Integer> statuss;//订单状态:0-新建;10-待支付;20-待发货;30-配送中;40-惜阅中;50-待归还;
     private BigDecimal amount;//订单总价
     private Date dateFrom;//借阅日期从
     private Date dateEnd;//借阅日期到
     private Date orderDate;//下单日期
+    private Date payDate;//支付日期
+    private Date sendDate;//配送日期
+    private Date readingDate;//开始惜阅日期
+    private Date backingDate;//待归还日期
+    private Date doneDate;//订单完成日期
 
     /**
      * return 
@@ -35,28 +40,28 @@ public class Order extends BaseEntity {
     }
 
     /**
-     * return 订单状态:0-新建；10-待支付;20-待发货;30-配送中;40-惜阅中;50-待归还;
+     * return 订单状态:0-新建;10-待支付;20-待发货;30-配送中;40-惜阅中;50-待归还;
      */
     public Integer getStatus() {
         return status;
     }
 
     /**
-     * @param status 订单状态:0-新建；10-待支付;20-待发货;30-配送中;40-惜阅中;50-待归还;
+     * @param status 订单状态:0-新建;10-待支付;20-待发货;30-配送中;40-惜阅中;50-待归还;
      */
     public void setStatus(Integer status) {
         this.status = status;
     }
 
     /**
-     * return 订单状态:0-新建；10-待支付;20-待发货;30-配送中;40-惜阅中;50-待归还;s
+     * return 订单状态:0-新建;10-待支付;20-待发货;30-配送中;40-惜阅中;50-待归还;s
      */
     public List<Integer> getStatuss() {
         return statuss;
     }
 
     /**
-     * @param statuss 订单状态:0-新建；10-待支付;20-待发货;30-配送中;40-惜阅中;50-待归还;
+     * @param statuss 订单状态:0-新建;10-待支付;20-待发货;30-配送中;40-惜阅中;50-待归还;
      */
     public void setStatuss(List<Integer> statuss) {
         this.statuss = statuss;
@@ -116,5 +121,75 @@ public class Order extends BaseEntity {
      */
     public void setOrderDate(Date orderDate) {
         this.orderDate = orderDate;
+    }
+
+    /**
+     * return 支付日期
+     */
+    public Date getPayDate() {
+        return payDate;
+    }
+
+    /**
+     * @param payDate 支付日期
+     */
+    public void setPayDate(Date payDate) {
+        this.payDate = payDate;
+    }
+
+    /**
+     * return 配送日期
+     */
+    public Date getSendDate() {
+        return sendDate;
+    }
+
+    /**
+     * @param sendDate 配送日期
+     */
+    public void setSendDate(Date sendDate) {
+        this.sendDate = sendDate;
+    }
+
+    /**
+     * return 开始惜阅日期
+     */
+    public Date getReadingDate() {
+        return readingDate;
+    }
+
+    /**
+     * @param readingDate 开始惜阅日期
+     */
+    public void setReadingDate(Date readingDate) {
+        this.readingDate = readingDate;
+    }
+
+    /**
+     * return 待归还日期
+     */
+    public Date getBackingDate() {
+        return backingDate;
+    }
+
+    /**
+     * @param backingDate 待归还日期
+     */
+    public void setBackingDate(Date backingDate) {
+        this.backingDate = backingDate;
+    }
+
+    /**
+     * return 订单完成日期
+     */
+    public Date getDoneDate() {
+        return doneDate;
+    }
+
+    /**
+     * @param doneDate 订单完成日期
+     */
+    public void setDoneDate(Date doneDate) {
+        this.doneDate = doneDate;
     }
 }

@@ -10,6 +10,11 @@
         b_order.date_from as dateFrom,
         b_order.date_end as dateEnd,
         b_order.order_date as orderDate,
+        b_order.pay_date as payDate,
+        b_order.send_date as sendDate,
+        b_order.reading_date as readingDate,
+        b_order.backing_date as backingDate,
+        b_order.done_date as doneDate,
         b_order.created_date as createdDate,
         b_order.updated_date as updatedDate,
         b_order.created_by as createdBy,
@@ -23,6 +28,11 @@
         b_order.date_from,
         b_order.date_end,
         b_order.order_date,
+        b_order.pay_date,
+        b_order.send_date,
+        b_order.reading_date,
+        b_order.backing_date,
+        b_order.done_date,
         b_order.deleted_flag,
         b_order.created_date,
         b_order.updated_date,
@@ -58,6 +68,21 @@
         </if>
         <if test="cond.orderDate != null">
             AND b_order.order_date = #{cond.orderDate}
+        </if>
+        <if test="cond.payDate != null">
+            AND b_order.pay_date = #{cond.payDate}
+        </if>
+        <if test="cond.sendDate != null">
+            AND b_order.send_date = #{cond.sendDate}
+        </if>
+        <if test="cond.readingDate != null">
+            AND b_order.reading_date = #{cond.readingDate}
+        </if>
+        <if test="cond.backingDate != null">
+            AND b_order.backing_date = #{cond.backingDate}
+        </if>
+        <if test="cond.doneDate != null">
+            AND b_order.done_date = #{cond.doneDate}
         </if>
         <if test="cond.version != null">
             AND b_order.version = #{cond.version}
@@ -118,6 +143,11 @@
         #{dateFrom},
         #{dateEnd},
         #{orderDate},
+        #{payDate},
+        #{sendDate},
+        #{readingDate},
+        #{backingDate},
+        #{doneDate},
         0,
         <if test="createdDate == null">
             current_timestamp(),
@@ -151,6 +181,21 @@
             <if test="orderDate != null">
                 b_order.order_date,
             </if>
+            <if test="payDate != null">
+                b_order.pay_date,
+            </if>
+            <if test="sendDate != null">
+                b_order.send_date,
+            </if>
+            <if test="readingDate != null">
+                b_order.reading_date,
+            </if>
+            <if test="backingDate != null">
+                b_order.backing_date,
+            </if>
+            <if test="doneDate != null">
+                b_order.done_date,
+            </if>
             b_order.deleted_flag,
             b_order.created_date,
             b_order.updated_date,
@@ -176,6 +221,21 @@
         <if test="orderDate != null">
             #{orderDate},
         </if>
+        <if test="payDate != null">
+            #{payDate},
+        </if>
+        <if test="sendDate != null">
+            #{sendDate},
+        </if>
+        <if test="readingDate != null">
+            #{readingDate},
+        </if>
+        <if test="backingDate != null">
+            #{backingDate},
+        </if>
+        <if test="doneDate != null">
+            #{doneDate},
+        </if>
         0,
         current_timestamp(),
         current_timestamp(),
@@ -196,6 +256,11 @@
             #{item.dateFrom},
             #{item.dateEnd},
             #{item.orderDate},
+            #{item.payDate},
+            #{item.sendDate},
+            #{item.readingDate},
+            #{item.backingDate},
+            #{item.doneDate},
             0,
             current_timestamp(),
             current_timestamp(),
@@ -215,6 +280,11 @@
         #{dateFrom},
         #{dateEnd},
         #{orderDate},
+        #{payDate},
+        #{sendDate},
+        #{readingDate},
+        #{backingDate},
+        #{doneDate},
         0,
         current_timestamp(),
         current_timestamp(),
@@ -235,6 +305,11 @@
             #{item.dateFrom},
             #{item.dateEnd},
             #{item.orderDate},
+            #{item.payDate},
+            #{item.sendDate},
+            #{item.readingDate},
+            #{item.backingDate},
+            #{item.doneDate},
             0,
             current_timestamp(),
             current_timestamp(),
@@ -253,6 +328,11 @@
             date_from = #{dateFrom},
             date_end = #{dateEnd},
             order_date = #{orderDate},
+            pay_date = #{payDate},
+            send_date = #{sendDate},
+            reading_date = #{readingDate},
+            backing_date = #{backingDate},
+            done_date = #{doneDate},
             version = version + 1,
             updated_date = current_timestamp(),
             updated_by=#{updatedBy}
@@ -279,6 +359,21 @@
             </if>
             <if test="orderDate != null">
                 order_date = #{orderDate},
+            </if>
+            <if test="payDate != null">
+                pay_date = #{payDate},
+            </if>
+            <if test="sendDate != null">
+                send_date = #{sendDate},
+            </if>
+            <if test="readingDate != null">
+                reading_date = #{readingDate},
+            </if>
+            <if test="backingDate != null">
+                backing_date = #{backingDate},
+            </if>
+            <if test="doneDate != null">
+                done_date = #{doneDate},
             </if>
             version = version + 1,
             updated_date = current_timestamp(),

@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by shihao on 16/11/15.
@@ -13,10 +14,14 @@ public class OrderRO {
 
     private Long id;
     private Integer status;
+    private String statusDesc;
     private Long userId;
     private BigDecimal amount;
     private Date dateFrom;
     private Date dateEnd;
     private Date orderDate;
+    private String mobile;  //用户手机号
+
+    private List<OrderDetailRO> orderDetails;
 
 }
