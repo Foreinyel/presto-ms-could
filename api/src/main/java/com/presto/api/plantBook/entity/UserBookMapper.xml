@@ -6,6 +6,8 @@
         b_user_book.ID,
         b_user_book.book_id as bookId,
         b_user_book.user_id as userId,
+        b_user_book.pick_method as pickMethod,
+        b_user_book.pick_address as pickAddress,
         b_user_book.created_date as createdDate,
         b_user_book.updated_date as updatedDate,
         b_user_book.created_by as createdBy,
@@ -15,6 +17,8 @@
     <sql id="insert_all_cols">
         b_user_book.book_id,
         b_user_book.user_id,
+        b_user_book.pick_method,
+        b_user_book.pick_address,
         b_user_book.deleted_flag,
         b_user_book.created_date,
         b_user_book.updated_date,
@@ -32,6 +36,12 @@
         </if>
         <if test="cond.userId != null">
             AND b_user_book.user_id = #{cond.userId}
+        </if>
+        <if test="cond.pickMethod != null">
+            AND b_user_book.pick_method = #{cond.pickMethod}
+        </if>
+        <if test="cond.pickAddress != null">
+            AND b_user_book.pick_address = #{cond.pickAddress}
         </if>
         <if test="cond.version != null">
             AND b_user_book.version = #{cond.version}
@@ -88,6 +98,8 @@
         ) VALUES (
         #{bookId},
         #{userId},
+        #{pickMethod},
+        #{pickAddress},
         0,
         <if test="createdDate == null">
             current_timestamp(),
@@ -109,6 +121,12 @@
             <if test="userId != null">
                 b_user_book.user_id,
             </if>
+            <if test="pickMethod != null">
+                b_user_book.pick_method,
+            </if>
+            <if test="pickAddress != null">
+                b_user_book.pick_address,
+            </if>
             b_user_book.deleted_flag,
             b_user_book.created_date,
             b_user_book.updated_date,
@@ -121,6 +139,12 @@
         </if>
         <if test="userId != null">
             #{userId},
+        </if>
+        <if test="pickMethod != null">
+            #{pickMethod},
+        </if>
+        <if test="pickAddress != null">
+            #{pickAddress},
         </if>
         0,
         current_timestamp(),
@@ -138,6 +162,8 @@
             (
             #{item.bookId},
             #{item.userId},
+            #{item.pickMethod},
+            #{item.pickAddress},
             0,
             current_timestamp(),
             current_timestamp(),
@@ -153,6 +179,8 @@
         (#{id},
         #{bookId},
         #{userId},
+        #{pickMethod},
+        #{pickAddress},
         0,
         current_timestamp(),
         current_timestamp(),
@@ -169,6 +197,8 @@
             #{item.id},
             #{item.bookId},
             #{item.userId},
+            #{item.pickMethod},
+            #{item.pickAddress},
             0,
             current_timestamp(),
             current_timestamp(),
@@ -183,6 +213,8 @@
         <set>
             book_id = #{bookId},
             user_id = #{userId},
+            pick_method = #{pickMethod},
+            pick_address = #{pickAddress},
             version = version + 1,
             updated_date = current_timestamp(),
             updated_by=#{updatedBy}
@@ -197,6 +229,12 @@
             </if>
             <if test="userId != null">
                 user_id = #{userId},
+            </if>
+            <if test="pickMethod != null">
+                pick_method = #{pickMethod},
+            </if>
+            <if test="pickAddress != null">
+                pick_address = #{pickAddress},
             </if>
             version = version + 1,
             updated_date = current_timestamp(),

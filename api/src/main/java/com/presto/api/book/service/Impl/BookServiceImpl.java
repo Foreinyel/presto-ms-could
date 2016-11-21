@@ -21,4 +21,9 @@ public class BookServiceImpl implements BookService{
         return bookDao.findBooks();
     }
 
+    public BookRO findBookById(final Long bookId){
+        BookRO bookRO = bookDao.findBookById(bookId);
+        return bookRO;
+    }
+
 }

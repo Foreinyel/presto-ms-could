@@ -10,4 +10,5 @@ import java.util.List;
 public interface BookService {
 
     List<BookRO> findBooks();
+    BookRO findBookById(final Long bookId);
 }

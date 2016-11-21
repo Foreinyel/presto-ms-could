@@ -11,4 +11,5 @@ import java.util.List;
 public interface BookDao extends CommonDao {
 
     List<BookRO> findBooks();
+    BookRO findBookById(final Long bookId);
 }

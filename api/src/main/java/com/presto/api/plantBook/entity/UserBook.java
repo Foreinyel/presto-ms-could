@@ -11,6 +11,8 @@ public class UserBook extends BaseEntity {
     private static final long serialVersionUID = 1L;
     private Long bookId;//书籍ID
     private Long userId;//用户ID
+    private Integer pickMethod;//取书方式:0-上门自取,1-平台配送
+    private String pickAddress;//取书地址
 
     /**
      * return 书籍ID
@@ -38,5 +40,33 @@ public class UserBook extends BaseEntity {
      */
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    /**
+     * return 取书方式:0-上门自取,1-平台配送
+     */
+    public Integer getPickMethod() {
+        return pickMethod;
+    }
+
+    /**
+     * @param pickMethod 取书方式:0-上门自取,1-平台配送
+     */
+    public void setPickMethod(Integer pickMethod) {
+        this.pickMethod = pickMethod;
+    }
+
+    /**
+     * return 取书地址
+     */
+    public String getPickAddress() {
+        return pickAddress;
+    }
+
+    /**
+     * @param pickAddress 取书地址
+     */
+    public void setPickAddress(String pickAddress) {
+        this.pickAddress = pickAddress;
     }
 }

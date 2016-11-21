@@ -48,6 +48,10 @@ public class PlantBookReqServiceImpl implements PlantBookReqService {
 
         plantBookDao.insert(plantBookReq);
 
+        //测试阶段直接通过
+        vo.setId(plantBookReq.getId());
+        this.plantBookReqApproval(vo);
+
         return plantBookReq;
     }
 

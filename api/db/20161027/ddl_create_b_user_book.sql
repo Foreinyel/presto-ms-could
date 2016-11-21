@@ -12,4 +12,9 @@ CREATE TABLE `presto`.`b_user_book` (
    INDEX `idx_b_user_book_id` (`id` ASC))
     ENGINE = InnoDB
 	DEFAULT CHARACTER SET = utf8
-	COMMENT = '用户分享书籍表'
+	COMMENT = '用户分享书籍表';
+
+ALTER TABLE `presto`.`b_user_book`
+ADD COLUMN `pick_method` INT NULL COMMENT '取书方式:0-上门自取,1-平台配送' AFTER `user_id`;
+ALTER TABLE `presto`.`b_user_book`
+ADD COLUMN `pick_address` VARCHAR(200) NULL COMMENT '取书地址' AFTER `pick_method`;
