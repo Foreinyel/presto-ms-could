@@ -14,4 +14,7 @@ CREATE TABLE `presto`.`u_user` (
   UNIQUE INDEX `idx_user_mobile` (`mobile` ASC) )
   ENGINE = InnoDB
 	DEFAULT CHARACTER SET = utf8
-	COMMENT = '用户表'
+	COMMENT = '用户表';
+	
+ALTER TABLE `presto`.`u_user`
+  ADD COLUMN `name` VARCHAR(200) NULL COMMENT '用户昵称' AFTER `mobile`;

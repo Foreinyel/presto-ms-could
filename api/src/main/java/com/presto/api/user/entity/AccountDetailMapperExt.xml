@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.presto.api.user.entity.AccountDetail">
+    <select id="findUserAccountBalance" resultType="com.presto.api.user.ro.AccountRO">
+        select sum(amount) as amount,ua.id as accountId from u_account_detail uad,u_account ua
+        where ua.id = uad.account_id
+        and ua.deleted_flag = 0
+        and uad.deleted_flag = 0
+        and ua.user_id = #{userId}
+    </select>
+</mapper>

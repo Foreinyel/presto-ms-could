@@ -3,8 +3,11 @@
 <mapper namespace="com.presto.api.order.entity.Order">
     <resultMap type="com.presto.api.order.entity.Order" id="result"/>
     <sql id="select_all_cols">
-        b_order.ID,
+        b_order.id,
         b_order.user_id as userId,
+        b_order.address as address,
+        b_order.mobile as mobile,
+        b_order.name as name,
         b_order.status as status,
         b_order.amount as amount,
         b_order.date_from as dateFrom,
@@ -12,9 +15,12 @@
         b_order.order_date as orderDate,
         b_order.pay_date as payDate,
         b_order.send_date as sendDate,
+        b_order.send_order_com as sendOrderCom,
+        b_order.send_order_com_order_no as sendOrderComOrderNo,
         b_order.reading_date as readingDate,
         b_order.backing_date as backingDate,
         b_order.done_date as doneDate,
+        b_order.note as note,
         b_order.created_date as createdDate,
         b_order.updated_date as updatedDate,
         b_order.created_by as createdBy,
@@ -23,6 +29,9 @@
     </sql>
     <sql id="insert_all_cols">
         b_order.user_id,
+        b_order.address,
+        b_order.mobile,
+        b_order.name,
         b_order.status,
         b_order.amount,
         b_order.date_from,
@@ -30,9 +39,12 @@
         b_order.order_date,
         b_order.pay_date,
         b_order.send_date,
+        b_order.send_order_com,
+        b_order.send_order_com_order_no,
         b_order.reading_date,
         b_order.backing_date,
         b_order.done_date,
+        b_order.note,
         b_order.deleted_flag,
         b_order.created_date,
         b_order.updated_date,
@@ -47,6 +59,15 @@
         </if>
         <if test="cond.userId != null">
             AND b_order.user_id = #{cond.userId}
+        </if>
+        <if test="cond.address != null">
+            AND b_order.address = #{cond.address}
+        </if>
+        <if test="cond.mobile != null">
+            AND b_order.mobile = #{cond.mobile}
+        </if>
+        <if test="cond.name != null">
+            AND b_order.name = #{cond.name}
         </if>
         <if test="cond.status != null">
             AND b_order.status = #{cond.status}
@@ -75,6 +96,12 @@
         <if test="cond.sendDate != null">
             AND b_order.send_date = #{cond.sendDate}
         </if>
+        <if test="cond.sendOrderCom != null">
+            AND b_order.send_order_com = #{cond.sendOrderCom}
+        </if>
+        <if test="cond.sendOrderComOrderNo != null">
+            AND b_order.send_order_com_order_no = #{cond.sendOrderComOrderNo}
+        </if>
         <if test="cond.readingDate != null">
             AND b_order.reading_date = #{cond.readingDate}
         </if>
@@ -83,6 +110,9 @@
         </if>
         <if test="cond.doneDate != null">
             AND b_order.done_date = #{cond.doneDate}
+        </if>
+        <if test="cond.note != null">
+            AND b_order.note = #{cond.note}
         </if>
         <if test="cond.version != null">
             AND b_order.version = #{cond.version}
@@ -109,7 +139,7 @@
     <select id="select" resultMap="result">
         select <include refid="select_all_cols"/>
         FROM b_order
-        WHERE deleted_flag = 0 and b_order.ID=#{id}
+        WHERE deleted_flag = 0 and b_order.id=#{id}
         <if test="lock">
             FOR UPDATE
         </if>
@@ -138,6 +168,9 @@
             <include refid="insert_all_cols"/>
         ) VALUES (
         #{userId},
+        #{address},
+        #{mobile},
+        #{name},
         #{status},
         #{amount},
         #{dateFrom},
@@ -145,9 +178,12 @@
         #{orderDate},
         #{payDate},
         #{sendDate},
+        #{sendOrderCom},
+        #{sendOrderComOrderNo},
         #{readingDate},
         #{backingDate},
         #{doneDate},
+        #{note},
         0,
         <if test="createdDate == null">
             current_timestamp(),
@@ -165,6 +201,15 @@
         INSERT INTO b_order(
             <if test="userId != null">
                 b_order.user_id,
+            </if>
+            <if test="address != null">
+                b_order.address,
+            </if>
+            <if test="mobile != null">
+                b_order.mobile,
+            </if>
+            <if test="name != null">
+                b_order.name,
             </if>
             <if test="status != null">
                 b_order.status,
@@ -187,6 +232,12 @@
             <if test="sendDate != null">
                 b_order.send_date,
             </if>
+            <if test="sendOrderCom != null">
+                b_order.send_order_com,
+            </if>
+            <if test="sendOrderComOrderNo != null">
+                b_order.send_order_com_order_no,
+            </if>
             <if test="readingDate != null">
                 b_order.reading_date,
             </if>
@@ -195,6 +246,9 @@
             </if>
             <if test="doneDate != null">
                 b_order.done_date,
+            </if>
+            <if test="note != null">
+                b_order.note,
             </if>
             b_order.deleted_flag,
             b_order.created_date,
@@ -205,6 +259,15 @@
         ) VALUES (
         <if test="userId != null">
             #{userId},
+        </if>
+        <if test="address != null">
+            #{address},
+        </if>
+        <if test="mobile != null">
+            #{mobile},
+        </if>
+        <if test="name != null">
+            #{name},
         </if>
         <if test="status != null">
             #{status},
@@ -227,6 +290,12 @@
         <if test="sendDate != null">
             #{sendDate},
         </if>
+        <if test="sendOrderCom != null">
+            #{sendOrderCom},
+        </if>
+        <if test="sendOrderComOrderNo != null">
+            #{sendOrderComOrderNo},
+        </if>
         <if test="readingDate != null">
             #{readingDate},
         </if>
@@ -235,6 +304,9 @@
         </if>
         <if test="doneDate != null">
             #{doneDate},
+        </if>
+        <if test="note != null">
+            #{note},
         </if>
         0,
         current_timestamp(),
@@ -251,6 +323,9 @@
         <foreach item="item" index="index" collection="list" open="" separator="," close="">
             (
             #{item.userId},
+            #{item.address},
+            #{item.mobile},
+            #{item.name},
             #{item.status},
             #{item.amount},
             #{item.dateFrom},
@@ -258,9 +333,12 @@
             #{item.orderDate},
             #{item.payDate},
             #{item.sendDate},
+            #{item.sendOrderCom},
+            #{item.sendOrderComOrderNo},
             #{item.readingDate},
             #{item.backingDate},
             #{item.doneDate},
+            #{item.note},
             0,
             current_timestamp(),
             current_timestamp(),
@@ -271,10 +349,13 @@
         </foreach>
     </insert>
     <insert id="insertWithId">
-        INSERT INTO b_order(ID,<include refid="insert_all_cols"/>)
+        INSERT INTO b_order(id,<include refid="insert_all_cols"/>)
         VALUES
         (#{id},
         #{userId},
+        #{address},
+        #{mobile},
+        #{name},
         #{status},
         #{amount},
         #{dateFrom},
@@ -282,9 +363,12 @@
         #{orderDate},
         #{payDate},
         #{sendDate},
+        #{sendOrderCom},
+        #{sendOrderComOrderNo},
         #{readingDate},
         #{backingDate},
         #{doneDate},
+        #{note},
         0,
         current_timestamp(),
         current_timestamp(),
@@ -294,12 +378,15 @@
         )
     </insert>
     <insert id="batchInsertWithId">
-        INSERT INTO b_order(ID,<include refid="insert_all_cols"/>)
+        INSERT INTO b_order(id,<include refid="insert_all_cols"/>)
         VALUES
         <foreach item="item" index="index" collection="list" open="" separator="," close="">
             (
             #{item.id},
             #{item.userId},
+            #{item.address},
+            #{item.mobile},
+            #{item.name},
             #{item.status},
             #{item.amount},
             #{item.dateFrom},
@@ -307,9 +394,12 @@
             #{item.orderDate},
             #{item.payDate},
             #{item.sendDate},
+            #{item.sendOrderCom},
+            #{item.sendOrderComOrderNo},
             #{item.readingDate},
             #{item.backingDate},
             #{item.doneDate},
+            #{item.note},
             0,
             current_timestamp(),
             current_timestamp(),
@@ -323,6 +413,9 @@
         update b_order
         <set>
             user_id = #{userId},
+            address = #{address},
+            mobile = #{mobile},
+            name = #{name},
             status = #{status},
             amount = #{amount},
             date_from = #{dateFrom},
@@ -330,9 +423,12 @@
             order_date = #{orderDate},
             pay_date = #{payDate},
             send_date = #{sendDate},
+            send_order_com = #{sendOrderCom},
+            send_order_com_order_no = #{sendOrderComOrderNo},
             reading_date = #{readingDate},
             backing_date = #{backingDate},
             done_date = #{doneDate},
+            note = #{note},
             version = version + 1,
             updated_date = current_timestamp(),
             updated_by=#{updatedBy}
@@ -344,6 +440,15 @@
         <set>
             <if test="userId != null">
                 user_id = #{userId},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile},
+            </if>
+            <if test="name != null">
+                name = #{name},
             </if>
             <if test="status != null">
                 status = #{status},
@@ -366,6 +471,12 @@
             <if test="sendDate != null">
                 send_date = #{sendDate},
             </if>
+            <if test="sendOrderCom != null">
+                send_order_com = #{sendOrderCom},
+            </if>
+            <if test="sendOrderComOrderNo != null">
+                send_order_com_order_no = #{sendOrderComOrderNo},
+            </if>
             <if test="readingDate != null">
                 reading_date = #{readingDate},
             </if>
@@ -374,6 +485,9 @@
             </if>
             <if test="doneDate != null">
                 done_date = #{doneDate},
+            </if>
+            <if test="note != null">
+                note = #{note},
             </if>
             version = version + 1,
             updated_date = current_timestamp(),

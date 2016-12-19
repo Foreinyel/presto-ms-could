@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.presto.api.plantBook.entity.UserBook">
+    <select id="findByBookId" resultType="com.presto.api.plantBook.ro.UserBookRO">
+        select
+          bub.id,
+          bub.book_id as bookId,
+          bub.user_id as userId,
+          bub.pick_method as pickMethod,
+          bub.pick_address as pickAddress,
+          bb.price,
+          uu.name as userName
+from b_user_book bub,u_user uu,b_books bb
+where bub.user_id = uu.id and bb.id = bub.book_id
+and bub.deleted_flag = 0
+and bub.book_id = #{bookId}
+    </select>
+</mapper>

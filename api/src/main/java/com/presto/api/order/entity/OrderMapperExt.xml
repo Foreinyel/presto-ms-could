@@ -3,15 +3,20 @@
 <mapper namespace="com.presto.api.order.entity.Order">
 
     <resultMap id="orderResult" type="com.presto.api.order.ro.OrderRO">
-        <id column="id" property="id"/>
-        <id column="user_id" property="userId"/>
+        <id column="ID" property="id"/>
+        <id column="userId" property="userId"/>
         <id column="status" property="status"/>
         <id column="amount" property="amount"/>
-        <id column="date_from" property="dateFrom"/>
-        <id column="date_end" property="dateEnd"/>
-        <id column="order_date" property="orderDate"/>
-        <id column="order_date" property="orderDate"/>
+        <id column="dateFrom" property="dateFrom"/>
+        <id column="dateEnd" property="dateEnd"/>
+        <id column="orderDate" property="orderDate"/>
         <id column="mobile" property="mobile"/>
+        <id column="name" property="name"/>
+        <id column="address" property="address"/>
+        <id column="note" property="note"/>
+        <id column="sendDate" property="sendDate"/>
+        <id column="sendOrderCom" property="sendOrderCom"/>
+        <id column="sendOrderComOrderNo" property="sendOrderComOrderNo"/>
         <collection property="orderDetails" ofType="com.presto.api.order.ro.OrderDetailRO">
             <result column="d_id" property="id"/>
             <result column="user_book_id" property="userBookId"/>
@@ -21,35 +26,77 @@
             <result column="price" property="price"/>
             <result column="book_press" property="bookPress"/>
             <result column="book_isbn" property="bookIsbn"/>
+            <result column="book_owner" property="bookOwner"/>
+            <result column="book_owner_id" property="bookOwnerId"/>
         </collection>
     </resultMap>
 
     <select id="queryOrderByUser" resultMap="orderResult">
-        select bo.id,
-               bo.user_id,
-               bo.status,
-               bo.amount,
-               bo.date_from,
-               bo.date_end,
-               bo.order_date,
-               uu.mobile,
-               bod.id as d_id,
-               bub.id as user_book_id,
-               bb.id as book_id,
-               bb.book_name,
-               bb.price,
-               bb.book_author,
-               bb.book_press,
-               bb.book_isbn
-        from b_order bo,u_user uu,b_order_detail bod,b_user_book bub,b_books bb
-        where bo.user_id = uu.id
-          and bo.deleted_flag = 0
-          and bod.order_id = bo.id
-          and bub.id = bod.user_book_id
-          and bb.id = bub.book_id
-          and bo.user_id = #{userId}
-          <if test="status != null">
-              bo.status = #{status}
-          </if>
+        select
+        bod.id as d_id,
+        bub.id as user_book_id,
+        bb.id as book_id,
+        bb.book_name,
+        bod.price,
+        bb.book_author,
+        bb.book_press,
+        bb.book_isbn,
+        <include refid="select_all_cols"></include>
+        from b_order b_order,u_user uu,b_order_detail bod,b_user_book bub,b_books bb
+        where b_order.user_id = uu.id
+        and b_order.deleted_flag = 0
+        and bod.order_id = b_order.id
+        and bub.id = bod.user_book_id
+        and bb.id = bub.book_id
+        and b_order.user_id = #{userId}
+        <if test="status != null">
+            and b_order.status = #{status}
+        </if>
+        order by b_order.id DESC
+    </select>
+    <select id="queryOrderById" resultMap="orderResult">
+        select
+        bod.id as d_id,
+        bub.id as user_book_id,
+        bb.id as book_id,
+        bb.book_name,
+        bod.price,
+        bb.book_author,
+        bb.book_press,
+        bb.book_isbn,
+        uu.name as book_owner,
+        uu.id as book_owner_id,
+        <include refid="select_all_cols"></include>
+        from b_order b_order,u_user uu,b_order_detail bod,b_user_book bub,b_books bb
+        where bub.user_id = uu.id
+        and b_order.deleted_flag = 0
+        and bod.order_id = b_order.id
+        and bub.id = bod.user_book_id
+        and bb.id = bub.book_id
+        and b_order.id = #{orderId}
+    </select>
+    <select id="queryAllOrders" resultMap="orderResult">
+        select
+        bod.id as d_id,
+        bub.id as user_book_id,
+        bb.id as book_id,
+        bb.book_name,
+        bod.price,
+        bb.book_author,
+        bb.book_press,
+        bb.book_isbn,
+        uu.name as book_owner,
+        uu.id as book_owner_id,
+        <include refid="select_all_cols"></include>
+        from b_order b_order,u_user uu,b_order_detail bod,b_user_book bub,b_books bb
+        where bub.user_id = uu.id
+        and b_order.deleted_flag = 0
+        and bod.order_id = b_order.id
+        and bub.id = bod.user_book_id
+        and bb.id = bub.book_id
+        <if test="status != null">
+            and b_order.status = #{status}
+        </if>
+        order by b_order.id DESC
     </select>
 </mapper>

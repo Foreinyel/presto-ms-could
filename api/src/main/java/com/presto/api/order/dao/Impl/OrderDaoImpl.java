@@ -17,8 +17,16 @@ public class OrderDaoImpl extends CommonDaoImpl implements OrderDao {
 
     private static final String NAMESPACE = Order.class.getName() + ".";
 
-    public List<OrderRO> queryOrdersByUser(Map<String,Object> param){
-        return getSqlSession().selectList(NAMESPACE + "queryOrderByUser",param);
+    public List<OrderRO> queryOrdersByUser(Map<String, Object> param) {
+        return getSqlSession().selectList(NAMESPACE + "queryOrderByUser", param);
+    }
+
+    public OrderRO findOrderById(Map<String, Object> param) {
+        return getSqlSession().selectOne(NAMESPACE + "queryOrderById", param);
+    }
+
+    public List<OrderRO> queryAllOrders(Map<String,Object> param){
+        return getSqlSession().selectList(NAMESPACE + "queryAllOrders",param);
     }
 
 }

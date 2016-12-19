@@ -1,6 +1,7 @@
 package com.presto.api.book.service;
 
 import com.presto.api.book.ro.BookRO;
+import com.presto.api.book.vo.BookVO;
 
 import java.util.List;
 
@@ -11,4 +12,6 @@ public interface BookService {
 
     List<BookRO> findBooks();
     BookRO findBookById(final Long bookId);
+    List<BookRO> findAllBook(final BookVO vo);
+    int updateBook(final BookVO vo);
 }

@@ -5,7 +5,7 @@
     <sql id="select_all_cols">
 #set($p=".")
 #set($d="$")
-        ${table.fullName}.ID,
+        ${table.fullName}.id,
 #foreach( ${col} in ${table.cols} )
         ${table.fullName}.${col.colName} as ${col.fieldName},
 #end
@@ -69,7 +69,7 @@
     <select id="select" resultMap="result">
         select <include refid="select_all_cols"/>
         FROM ${table.fullName}
-        WHERE deleted_flag = 0 and ${table.fullName}.ID=#{id}
+        WHERE deleted_flag = 0 and ${table.fullName}.id=#{id}
         <if test="lock">
             FOR UPDATE
         </if>
@@ -159,7 +159,7 @@
         </foreach>
     </insert>
     <insert id="insertWithId">
-        INSERT INTO ${table.fullName}(ID,<include refid="insert_all_cols"/>)
+        INSERT INTO ${table.fullName}(id,<include refid="insert_all_cols"/>)
         VALUES
         (#{id},
 #foreach( ${col} in ${table.cols} )
@@ -174,7 +174,7 @@
         )
     </insert>
     <insert id="batchInsertWithId">
-        INSERT INTO ${table.fullName}(ID,<include refid="insert_all_cols"/>)
+        INSERT INTO ${table.fullName}(id,<include refid="insert_all_cols"/>)
         VALUES
         <foreach item="item" index="index" collection="list" open="" separator="," close="">
             (

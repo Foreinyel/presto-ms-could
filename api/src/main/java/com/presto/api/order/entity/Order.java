@@ -13,6 +13,9 @@ import java.util.Date;
 public class Order extends BaseEntity {
     private static final long serialVersionUID = 1L;
     private Long userId;//
+    private String address;//联系方式-地址
+    private String mobile;//联系方式-电话
+    private String name;//联系方式
     private Integer status;//订单状态:0-新建;10-待支付;20-待发货;30-配送中;40-惜阅中;50-待归还;
     transient private List<Integer> statuss;//订单状态:0-新建;10-待支付;20-待发货;30-配送中;40-惜阅中;50-待归还;
     private BigDecimal amount;//订单总价
@@ -21,9 +24,12 @@ public class Order extends BaseEntity {
     private Date orderDate;//下单日期
     private Date payDate;//支付日期
     private Date sendDate;//配送日期
+    private String sendOrderCom;//配送公司
+    private String sendOrderComOrderNo;//配送订单号
     private Date readingDate;//开始惜阅日期
     private Date backingDate;//待归还日期
     private Date doneDate;//订单完成日期
+    private String note;//备注
 
     /**
      * return 
@@ -37,6 +43,48 @@ public class Order extends BaseEntity {
      */
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    /**
+     * return 联系方式-地址
+     */
+    public String getAddress() {
+        return address;
+    }
+
+    /**
+     * @param address 联系方式-地址
+     */
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    /**
+     * return 联系方式-电话
+     */
+    public String getMobile() {
+        return mobile;
+    }
+
+    /**
+     * @param mobile 联系方式-电话
+     */
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    /**
+     * return 联系方式
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name 联系方式
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -152,6 +200,34 @@ public class Order extends BaseEntity {
     }
 
     /**
+     * return 配送公司
+     */
+    public String getSendOrderCom() {
+        return sendOrderCom;
+    }
+
+    /**
+     * @param sendOrderCom 配送公司
+     */
+    public void setSendOrderCom(String sendOrderCom) {
+        this.sendOrderCom = sendOrderCom;
+    }
+
+    /**
+     * return 配送订单号
+     */
+    public String getSendOrderComOrderNo() {
+        return sendOrderComOrderNo;
+    }
+
+    /**
+     * @param sendOrderComOrderNo 配送订单号
+     */
+    public void setSendOrderComOrderNo(String sendOrderComOrderNo) {
+        this.sendOrderComOrderNo = sendOrderComOrderNo;
+    }
+
+    /**
      * return 开始惜阅日期
      */
     public Date getReadingDate() {
@@ -191,5 +267,19 @@ public class Order extends BaseEntity {
      */
     public void setDoneDate(Date doneDate) {
         this.doneDate = doneDate;
+    }
+
+    /**
+     * return 备注
+     */
+    public String getNote() {
+        return note;
+    }
+
+    /**
+     * @param note 备注
+     */
+    public void setNote(String note) {
+        this.note = note;
     }
 }

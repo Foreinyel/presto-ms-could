@@ -8,7 +8,7 @@
         AND bb.deleted_flag = 0
     </select>
     <select id="findBookById" resultType="com.presto.api.book.ro.BookRO">
-        select bb.id
+        select bb.id as bookId
               ,bb.book_name as bookName
               ,bb.book_img_url as bookImgUrl
               ,bb.book_isbn as bookIsbn
@@ -18,5 +18,25 @@
               ,bb.price
         from b_books bb
         where bb.id = #{bookId}
+    </select>
+    <select id="findAllBooks" resultType="com.presto.api.book.ro.BookRO">
+        select bb.id as bookId,bb.book_name as bookName,bb.book_author as authorName,bb.book_img_url as bookImgUrl,
+        bb.book_press as bookPress,
+        bb.book_isbn as bookIsbn,
+        bb.book_price as bookPrice,
+        bb.book_desc as bookDesc,
+        bb.price
+        from b_books bb
+        where bb.deleted_flag = 0
+        <if test="bookName != null and bookName != ''">
+            AND bb.book_name like '%${bookName}%'
+        </if>
+        <if test="bookAuthor  != null and bookAuthor != ''">
+            AND bb.book_author like '%${bookAuthor}%'
+        </if>
+        <if test="bookIsbn  != null and bookIsbn != ''">
+            AND bb.book_isbn = #{bookIsbn}
+        </if>
+        ORDER by bb.id
     </select>
 </mapper>

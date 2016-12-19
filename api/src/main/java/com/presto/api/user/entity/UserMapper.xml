@@ -3,8 +3,9 @@
 <mapper namespace="com.presto.api.user.entity.User">
     <resultMap type="com.presto.api.user.entity.User" id="result"/>
     <sql id="select_all_cols">
-        u_user.ID,
+        u_user.id,
         u_user.mobile as mobile,
+        u_user.name as name,
         u_user.invite_code_id as inviteCodeId,
         u_user.passwd as passwd,
         u_user.created_date as createdDate,
@@ -15,6 +16,7 @@
     </sql>
     <sql id="insert_all_cols">
         u_user.mobile,
+        u_user.name,
         u_user.invite_code_id,
         u_user.passwd,
         u_user.deleted_flag,
@@ -31,6 +33,9 @@
         </if>
         <if test="cond.mobile != null">
             AND u_user.mobile = #{cond.mobile}
+        </if>
+        <if test="cond.name != null">
+            AND u_user.name = #{cond.name}
         </if>
         <if test="cond.inviteCodeId != null">
             AND u_user.invite_code_id = #{cond.inviteCodeId}
@@ -63,7 +68,7 @@
     <select id="select" resultMap="result">
         select <include refid="select_all_cols"/>
         FROM u_user
-        WHERE deleted_flag = 0 and u_user.ID=#{id}
+        WHERE deleted_flag = 0 and u_user.id=#{id}
         <if test="lock">
             FOR UPDATE
         </if>
@@ -92,6 +97,7 @@
             <include refid="insert_all_cols"/>
         ) VALUES (
         #{mobile},
+        #{name},
         #{inviteCodeId},
         #{passwd},
         0,
@@ -112,6 +118,9 @@
             <if test="mobile != null">
                 u_user.mobile,
             </if>
+            <if test="name != null">
+                u_user.name,
+            </if>
             <if test="inviteCodeId != null">
                 u_user.invite_code_id,
             </if>
@@ -127,6 +136,9 @@
         ) VALUES (
         <if test="mobile != null">
             #{mobile},
+        </if>
+        <if test="name != null">
+            #{name},
         </if>
         <if test="inviteCodeId != null">
             #{inviteCodeId},
@@ -149,6 +161,7 @@
         <foreach item="item" index="index" collection="list" open="" separator="," close="">
             (
             #{item.mobile},
+            #{item.name},
             #{item.inviteCodeId},
             #{item.passwd},
             0,
@@ -161,10 +174,11 @@
         </foreach>
     </insert>
     <insert id="insertWithId">
-        INSERT INTO u_user(ID,<include refid="insert_all_cols"/>)
+        INSERT INTO u_user(id,<include refid="insert_all_cols"/>)
         VALUES
         (#{id},
         #{mobile},
+        #{name},
         #{inviteCodeId},
         #{passwd},
         0,
@@ -176,12 +190,13 @@
         )
     </insert>
     <insert id="batchInsertWithId">
-        INSERT INTO u_user(ID,<include refid="insert_all_cols"/>)
+        INSERT INTO u_user(id,<include refid="insert_all_cols"/>)
         VALUES
         <foreach item="item" index="index" collection="list" open="" separator="," close="">
             (
             #{item.id},
             #{item.mobile},
+            #{item.name},
             #{item.inviteCodeId},
             #{item.passwd},
             0,
@@ -197,6 +212,7 @@
         update u_user
         <set>
             mobile = #{mobile},
+            name = #{name},
             invite_code_id = #{inviteCodeId},
             passwd = #{passwd},
             version = version + 1,
@@ -210,6 +226,9 @@
         <set>
             <if test="mobile != null">
                 mobile = #{mobile},
+            </if>
+            <if test="name != null">
+                name = #{name},
             </if>
             <if test="inviteCodeId != null">
                 invite_code_id = #{inviteCodeId},

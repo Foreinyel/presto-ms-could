@@ -25,6 +25,14 @@ public class OrderVO {
     private Date dateEnd;
     private Date orderDate;
 
+    private String name;
+    private String mobile;
+    private String address;
+    private String note;
+
+    private String sendOrderCom;    //配送公司
+    private String sendOrderComOrderNo; //配送订单号
+
     private List<OrderDetailVO> orderDetails;
 
 }

@@ -13,10 +13,13 @@ public class OrderDetailRO {
     private Long id;
     private Long userBookId;
     private Long bookId;
-    private Long bookName;
+    private String bookName;
     private String bookAuthor;
     private BigDecimal price;
     private String bookPress;
     private String bookIsbn;
+
+    private Long bookOwnerId;
+    private String bookOwner;
 
 }

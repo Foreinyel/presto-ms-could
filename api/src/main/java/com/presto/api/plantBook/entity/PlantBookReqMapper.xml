@@ -3,7 +3,7 @@
 <mapper namespace="com.presto.api.plantBook.entity.PlantBookReq">
     <resultMap type="com.presto.api.plantBook.entity.PlantBookReq" id="result"/>
     <sql id="select_all_cols">
-        b_plant_book_req.ID,
+        b_plant_book_req.id,
         b_plant_book_req.user_id as userId,
         b_plant_book_req.status as status,
         b_plant_book_req.plant_type as plantType,
@@ -104,7 +104,7 @@
     <select id="select" resultMap="result">
         select <include refid="select_all_cols"/>
         FROM b_plant_book_req
-        WHERE deleted_flag = 0 and b_plant_book_req.ID=#{id}
+        WHERE deleted_flag = 0 and b_plant_book_req.id=#{id}
         <if test="lock">
             FOR UPDATE
         </if>
@@ -258,7 +258,7 @@
         </foreach>
     </insert>
     <insert id="insertWithId">
-        INSERT INTO b_plant_book_req(ID,<include refid="insert_all_cols"/>)
+        INSERT INTO b_plant_book_req(id,<include refid="insert_all_cols"/>)
         VALUES
         (#{id},
         #{userId},
@@ -280,7 +280,7 @@
         )
     </insert>
     <insert id="batchInsertWithId">
-        INSERT INTO b_plant_book_req(ID,<include refid="insert_all_cols"/>)
+        INSERT INTO b_plant_book_req(id,<include refid="insert_all_cols"/>)
         VALUES
         <foreach item="item" index="index" collection="list" open="" separator="," close="">
             (

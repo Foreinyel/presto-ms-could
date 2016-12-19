@@ -12,6 +12,7 @@
         <module>app</module>
         <module>api</module>
         <module>common</module>
+        <module>op</module>
     </modules>
 
     <dependencyManagement>
@@ -123,7 +124,7 @@
             <version>${version.velocity}</version>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${version.junit}</version>
@@ -132,6 +133,11 @@
             <groupId>org.jmock</groupId>
             <artifactId>jmock-junit4</artifactId>
             <version>${version.jmock}</version>
+        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>

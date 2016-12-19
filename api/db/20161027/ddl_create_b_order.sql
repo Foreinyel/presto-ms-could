@@ -22,4 +22,19 @@ CREATE TABLE `presto`.`b_order` (
   UNIQUE INDEX `id_UNIQUE` (`id` ASC))
   ENGINE = InnoDB
 	DEFAULT CHARACTER SET = utf8
-	COMMENT = '订单头表'
+	COMMENT = '订单头表';
+
+ALTER TABLE `presto`.`b_order`
+ADD COLUMN `note` VARCHAR(200) NULL DEFAULT '' COMMENT '备注' AFTER `done_date`;
+ALTER TABLE `presto`.`b_order`
+ADD COLUMN `name` VARCHAR(45) NULL DEFAULT '' COMMENT '联系方式' AFTER `user_id`;
+ALTER TABLE `presto`.`b_order`
+ADD COLUMN `mobile` VARCHAR(45) NULL DEFAULT '' COMMENT '联系方式-电话' AFTER `user_id`;
+ALTER TABLE `presto`.`b_order`
+ADD COLUMN `address` VARCHAR(200) NULL DEFAULT '' COMMENT '联系方式-地址' AFTER `user_id`;
+
+--配送字段
+ALTER TABLE `presto`.`b_order`
+ADD COLUMN `send_order_com` VARCHAR(45) NULL DEFAULT '' COMMENT '配送公司' AFTER `send_date`;
+ALTER TABLE `presto`.`b_order`
+ADD COLUMN `send_order_com_order_no` VARCHAR(45) NULL DEFAULT '' COMMENT '配送订单号' AFTER `send_order_com`;

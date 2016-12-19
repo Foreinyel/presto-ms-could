@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.presto.api.user.entity.AccountDetail">
+    <resultMap type="com.presto.api.user.entity.AccountDetail" id="result"/>
+    <sql id="select_all_cols">
+        u_account_detail.id,
+        u_account_detail.account_id as accountId,
+        u_account_detail.source_type as sourceType,
+        u_account_detail.source_type_id as sourceTypeId,
+        u_account_detail.amount as amount,
+        u_account_detail.created_date as createdDate,
+        u_account_detail.updated_date as updatedDate,
+        u_account_detail.created_by as createdBy,
+        u_account_detail.updated_by as updatedBy,
+        u_account_detail.version
+    </sql>
+    <sql id="insert_all_cols">
+        u_account_detail.account_id,
+        u_account_detail.source_type,
+        u_account_detail.source_type_id,
+        u_account_detail.amount,
+        u_account_detail.deleted_flag,
+        u_account_detail.created_date,
+        u_account_detail.updated_date,
+        u_account_detail.created_by,
+        u_account_detail.updated_by,
+        u_account_detail.version
+    </sql>
+    <sql id="where_all">
+        WHERE u_account_detail.deleted_flag = 0
+        <if test="cond.id != null">
+            AND u_account_detail.id = #{cond.id}
+        </if>
+        <if test="cond.accountId != null">
+            AND u_account_detail.account_id = #{cond.accountId}
+        </if>
+        <if test="cond.sourceType != null">
+            AND u_account_detail.source_type = #{cond.sourceType}
+        </if>
+        <if test="cond.sourceTypeId != null">
+            AND u_account_detail.source_type_id = #{cond.sourceTypeId}
+        </if>
+        <if test="cond.amount != null">
+            AND u_account_detail.amount = #{cond.amount}
+        </if>
+        <if test="cond.version != null">
+            AND u_account_detail.version = #{cond.version}
+        </if>
+        <if test="cond.ids != null">
+            and u_account_detail.id in
+            <foreach item="item" index="index" collection="cond.ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="cond.createdDateB != null">
+            <![CDATA[AND u_account_detail.created_date >= #{cond.createdDateB}]]>
+        </if>
+        <if test="cond.createdDateE != null">
+            <![CDATA[AND u_account_detail.created_date <= #{cond.createdDateE}]]>
+        </if>
+        <if test="cond.updatedDateB != null">
+            <![CDATA[AND u_account_detail.updated_date >= #{cond.updatedDateB}]]>
+        </if>
+        <if test="cond.updatedDateE != null">
+            <![CDATA[AND u_account_detail.updated_date <= #{cond.updatedDateE}]]>
+        </if>
+    </sql>
+    <select id="select" resultMap="result">
+        select <include refid="select_all_cols"/>
+        FROM u_account_detail
+        WHERE deleted_flag = 0 and u_account_detail.id=#{id}
+        <if test="lock">
+            FOR UPDATE
+        </if>
+    </select>
+    <select id="query" resultMap="result">
+        select <include refid="select_all_cols"/>
+        FROM u_account_detail
+        <include refid="where_all"/>
+        <if test="start != null">
+            order by u_account_detail.created_date desc
+            limit #{start},#{size}
+        </if>
+    </select>
+    <select id="count" resultType="java.lang.Long">
+        select count(0)
+        FROM u_account_detail
+        <include refid="where_all"/>
+    </select>
+    <select id="sum" resultType="java.math.BigDecimal">
+        select sum(${col})
+        FROM u_account_detail
+        <include refid="where_all"/>
+    </select>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO u_account_detail(
+            <include refid="insert_all_cols"/>
+        ) VALUES (
+        #{accountId},
+        #{sourceType},
+        #{sourceTypeId},
+        #{amount},
+        0,
+        <if test="createdDate == null">
+            current_timestamp(),
+        </if>
+        <if test="createdDate != null">
+            #{createdDate},
+        </if>
+        current_timestamp(),
+        #{createdBy},
+        #{updatedBy},
+        1
+        )
+    </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO u_account_detail(
+            <if test="accountId != null">
+                u_account_detail.account_id,
+            </if>
+            <if test="sourceType != null">
+                u_account_detail.source_type,
+            </if>
+            <if test="sourceTypeId != null">
+                u_account_detail.source_type_id,
+            </if>
+            <if test="amount != null">
+                u_account_detail.amount,
+            </if>
+            u_account_detail.deleted_flag,
+            u_account_detail.created_date,
+            u_account_detail.updated_date,
+            u_account_detail.created_by,
+            u_account_detail.updated_by,
+            u_account_detail.version
+        ) VALUES (
+        <if test="accountId != null">
+            #{accountId},
+        </if>
+        <if test="sourceType != null">
+            #{sourceType},
+        </if>
+        <if test="sourceTypeId != null">
+            #{sourceTypeId},
+        </if>
+        <if test="amount != null">
+            #{amount},
+        </if>
+        0,
+        current_timestamp(),
+        current_timestamp(),
+        #{createdBy},
+        #{updatedBy},
+        1
+        )
+    </insert>
+    <insert id="batchInsert">
+        INSERT INTO u_account_detail(
+        <include refid="insert_all_cols" />
+        ) VALUES
+        <foreach item="item" index="index" collection="list" open="" separator="," close="">
+            (
+            #{item.accountId},
+            #{item.sourceType},
+            #{item.sourceTypeId},
+            #{item.amount},
+            0,
+            current_timestamp(),
+            current_timestamp(),
+            #{item.createdBy},
+            #{item.updatedBy},
+            1
+            )
+        </foreach>
+    </insert>
+    <insert id="insertWithId">
+        INSERT INTO u_account_detail(id,<include refid="insert_all_cols"/>)
+        VALUES
+        (#{id},
+        #{accountId},
+        #{sourceType},
+        #{sourceTypeId},
+        #{amount},
+        0,
+        current_timestamp(),
+        current_timestamp(),
+        #{createdBy},
+        #{updatedBy},
+        1
+        )
+    </insert>
+    <insert id="batchInsertWithId">
+        INSERT INTO u_account_detail(id,<include refid="insert_all_cols"/>)
+        VALUES
+        <foreach item="item" index="index" collection="list" open="" separator="," close="">
+            (
+            #{item.id},
+            #{item.accountId},
+            #{item.sourceType},
+            #{item.sourceTypeId},
+            #{item.amount},
+            0,
+            current_timestamp(),
+            current_timestamp(),
+            #{item.createdBy},
+            #{item.updatedBy},
+            1
+            )
+        </foreach>
+    </insert>
+    <update id="update">
+        update u_account_detail
+        <set>
+            account_id = #{accountId},
+            source_type = #{sourceType},
+            source_type_id = #{sourceTypeId},
+            amount = #{amount},
+            version = version + 1,
+            updated_date = current_timestamp(),
+            updated_by=#{updatedBy}
+        </set>
+        where u_account_detail.id = #{id}
+    </update>
+    <update id="updateSelective">
+        update u_account_detail
+        <set>
+            <if test="accountId != null">
+                account_id = #{accountId},
+            </if>
+            <if test="sourceType != null">
+                source_type = #{sourceType},
+            </if>
+            <if test="sourceTypeId != null">
+                source_type_id = #{sourceTypeId},
+            </if>
+            <if test="amount != null">
+                amount = #{amount},
+            </if>
+            version = version + 1,
+            updated_date = current_timestamp(),
+            updated_by=#{updatedBy}
+        </set>
+        where u_account_detail.id = #{id}
+    </update>
+    <delete id="delete">
+        update u_account_detail set deleted_flag = 1
+        <include refid="where_all"/>
+    </delete>
+    <delete id="deleteById">
+        update u_account_detail set deleted_flag = 1 where u_account_detail.id = #{id}
+    </delete>
+    <delete id="deleteCompletely">
+        delete from u_account_detail
+        <include refid="where_all"/>
+    </delete>
+    <delete id="deleteByIdCompletely">
+        delete from u_account_detail where u_account_detail.id = #{id}
+    </delete>
+</mapper>

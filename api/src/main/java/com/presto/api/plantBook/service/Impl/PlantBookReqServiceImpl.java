@@ -6,6 +6,7 @@ import com.presto.api.plantBook.dao.PlantBookDao;
 import com.presto.api.plantBook.dao.UserBookDao;
 import com.presto.api.plantBook.entity.PlantBookReq;
 import com.presto.api.plantBook.entity.UserBook;
+import com.presto.api.plantBook.ro.PlantBookReqRO;
 import com.presto.api.plantBook.service.PlantBookReqService;
 import com.presto.api.plantBook.vo.PlantBookReqVO;
 import com.presto.common.constants.CommonConstants;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by shihao on 16/11/2.
@@ -49,10 +51,22 @@ public class PlantBookReqServiceImpl implements PlantBookReqService {
         plantBookDao.insert(plantBookReq);
 
         //测试阶段直接通过
-        vo.setId(plantBookReq.getId());
-        this.plantBookReqApproval(vo);
+//        vo.setId(plantBookReq.getId());
+//        this.plantBookReqApproval(vo);
 
         return plantBookReq;
+    }
+
+    public int updatePlantBookReq(PlantBookReqVO vo){
+        PlantBookReq plantBookReq = plantBookDao.findById(PlantBookReq.class,vo.getId());
+        plantBookReq.setUpdatedDate(new Date());
+        plantBookReq.setBookPress(vo.getBookPress());
+        plantBookReq.setBookAuthor(vo.getBookAuthor());
+        plantBookReq.setBookImgUrl(vo.getBookImgUrl());
+        plantBookReq.setBookIsbn(vo.getBookIsbn());
+        plantBookReq.setBookName(vo.getBookName());
+        plantBookDao.update(plantBookReq);
+        return 0;
     }
 
     public PlantBookReq plantBookReqApproval(PlantBookReqVO vo) {
@@ -95,6 +109,10 @@ public class PlantBookReqServiceImpl implements PlantBookReqService {
         plantBookReq.setStatus(CommonConstants.PlantBookReqStatus.REJECT);
         plantBookDao.update(plantBookReq);
         return plantBookReq;
+    }
+
+    public List<PlantBookReqRO> findAllNewReqs(){
+        return plantBookDao.findAllNewReqs();
     }
 
 }

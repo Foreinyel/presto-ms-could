@@ -3,7 +3,7 @@
 <mapper namespace="com.presto.api.user.entity.InviteCode">
     <resultMap type="com.presto.api.user.entity.InviteCode" id="result"/>
     <sql id="select_all_cols">
-        u_invite_code.ID,
+        u_invite_code.id,
         u_invite_code.code as code,
         u_invite_code.status as status,
         u_invite_code.created_date as createdDate,
@@ -64,7 +64,7 @@
     <select id="select" resultMap="result">
         select <include refid="select_all_cols"/>
         FROM u_invite_code
-        WHERE deleted_flag = 0 and u_invite_code.ID=#{id}
+        WHERE deleted_flag = 0 and u_invite_code.id=#{id}
         <if test="lock">
             FOR UPDATE
         </if>
@@ -154,7 +154,7 @@
         </foreach>
     </insert>
     <insert id="insertWithId">
-        INSERT INTO u_invite_code(ID,<include refid="insert_all_cols"/>)
+        INSERT INTO u_invite_code(id,<include refid="insert_all_cols"/>)
         VALUES
         (#{id},
         #{code},
@@ -168,7 +168,7 @@
         )
     </insert>
     <insert id="batchInsertWithId">
-        INSERT INTO u_invite_code(ID,<include refid="insert_all_cols"/>)
+        INSERT INTO u_invite_code(id,<include refid="insert_all_cols"/>)
         VALUES
         <foreach item="item" index="index" collection="list" open="" separator="," close="">
             (

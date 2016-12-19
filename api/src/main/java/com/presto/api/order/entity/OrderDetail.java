@@ -1,6 +1,7 @@
 package com.presto.api.order.entity;
 
 import com.presto.common.dao.BaseEntity;
+import java.math.BigDecimal;
 
 /**
  * 订单行表
@@ -11,6 +12,7 @@ public class OrderDetail extends BaseEntity {
     private static final long serialVersionUID = 1L;
     private Long orderId;//
     private Long userBookId;//
+    private BigDecimal price;//书籍价格
 
     /**
      * return 
@@ -38,5 +40,19 @@ public class OrderDetail extends BaseEntity {
      */
     public void setUserBookId(Long userBookId) {
         this.userBookId = userBookId;
+    }
+
+    /**
+     * return 书籍价格
+     */
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    /**
+     * @param price 书籍价格
+     */
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }

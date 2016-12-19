@@ -13,10 +13,13 @@ public interface OrderService {
 
     Order createOrder(OrderVO vo);
     List<OrderRO> findOrdersByUser(OrderVO vo);
-    Order orderPay(OrderVO vo);
+    OrderRO findOrderById(OrderVO vo);
+    int orderPay(OrderVO vo);
     Order orderSend(OrderVO vo);
     Order bookReading(OrderVO vo);
     Order orderBacking(OrderVO vo);
     Order orderDone(OrderVO vo);
+    Order cancelOrder(OrderVO vo);
+    List<OrderRO> queryAllOrders(OrderVO vo);
 
 }

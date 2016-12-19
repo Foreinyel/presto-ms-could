@@ -10,6 +10,7 @@ import com.presto.common.dao.BaseEntity;
 public class User extends BaseEntity {
     private static final long serialVersionUID = 1L;
     private String mobile;//手机号码
+    private String name;//用户昵称
     private Long inviteCodeId;//注册邀请码
     private String passwd;//登录密码(验证码)
 
@@ -25,6 +26,20 @@ public class User extends BaseEntity {
      */
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    /**
+     * return 用户昵称
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name 用户昵称
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**

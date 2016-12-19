@@ -12,4 +12,6 @@ import java.util.Map;
 public interface OrderDao extends CommonDao {
 
     List<OrderRO> queryOrdersByUser(Map<String,Object> param);
+    OrderRO findOrderById(Map<String, Object> param);
+    List<OrderRO> queryAllOrders(Map<String,Object> param);
 }

@@ -21,6 +21,12 @@ public class OrderRO {
     private Date dateEnd;
     private Date orderDate;
     private String mobile;  //用户手机号
+    private String name;
+    private String address;
+    private String note;
+    private Date sendDate;
+    private String sendOrderCom;
+    private String sendOrderComOrderNo;
 
     private List<OrderDetailRO> orderDetails;
 

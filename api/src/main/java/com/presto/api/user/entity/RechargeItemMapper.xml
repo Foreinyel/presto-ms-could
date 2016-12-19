@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.presto.api.user.entity.RechargeItem">
+    <resultMap type="com.presto.api.user.entity.RechargeItem" id="result"/>
+    <sql id="select_all_cols">
+        u_recharge_item.id,
+        u_recharge_item.rmb_amount as rmbAmount,
+        u_recharge_item.amount as amount,
+        u_recharge_item.status as status,
+        u_recharge_item.created_date as createdDate,
+        u_recharge_item.updated_date as updatedDate,
+        u_recharge_item.created_by as createdBy,
+        u_recharge_item.updated_by as updatedBy,
+        u_recharge_item.version
+    </sql>
+    <sql id="insert_all_cols">
+        u_recharge_item.rmb_amount,
+        u_recharge_item.amount,
+        u_recharge_item.status,
+        u_recharge_item.deleted_flag,
+        u_recharge_item.created_date,
+        u_recharge_item.updated_date,
+        u_recharge_item.created_by,
+        u_recharge_item.updated_by,
+        u_recharge_item.version
+    </sql>
+    <sql id="where_all">
+        WHERE u_recharge_item.deleted_flag = 0
+        <if test="cond.id != null">
+            AND u_recharge_item.id = #{cond.id}
+        </if>
+        <if test="cond.rmbAmount != null">
+            AND u_recharge_item.rmb_amount = #{cond.rmbAmount}
+        </if>
+        <if test="cond.amount != null">
+            AND u_recharge_item.amount = #{cond.amount}
+        </if>
+        <if test="cond.status != null">
+            AND u_recharge_item.status = #{cond.status}
+        </if>
+        <if test="cond.statuss != null">
+            AND u_recharge_item.status in
+            <foreach item="item" index="index" collection="cond.statuss" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="cond.version != null">
+            AND u_recharge_item.version = #{cond.version}
+        </if>
+        <if test="cond.ids != null">
+            and u_recharge_item.id in
+            <foreach item="item" index="index" collection="cond.ids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="cond.createdDateB != null">
+            <![CDATA[AND u_recharge_item.created_date >= #{cond.createdDateB}]]>
+        </if>
+        <if test="cond.createdDateE != null">
+            <![CDATA[AND u_recharge_item.created_date <= #{cond.createdDateE}]]>
+        </if>
+        <if test="cond.updatedDateB != null">
+            <![CDATA[AND u_recharge_item.updated_date >= #{cond.updatedDateB}]]>
+        </if>
+        <if test="cond.updatedDateE != null">
+            <![CDATA[AND u_recharge_item.updated_date <= #{cond.updatedDateE}]]>
+        </if>
+    </sql>
+    <select id="select" resultMap="result">
+        select <include refid="select_all_cols"/>
+        FROM u_recharge_item
+        WHERE deleted_flag = 0 and u_recharge_item.id=#{id}
+        <if test="lock">
+            FOR UPDATE
+        </if>
+    </select>
+    <select id="query" resultMap="result">
+        select <include refid="select_all_cols"/>
+        FROM u_recharge_item
+        <include refid="where_all"/>
+        <if test="start != null">
+            order by u_recharge_item.created_date desc
+            limit #{start},#{size}
+        </if>
+    </select>
+    <select id="count" resultType="java.lang.Long">
+        select count(0)
+        FROM u_recharge_item
+        <include refid="where_all"/>
+    </select>
+    <select id="sum" resultType="java.math.BigDecimal">
+        select sum(${col})
+        FROM u_recharge_item
+        <include refid="where_all"/>
+    </select>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO u_recharge_item(
+            <include refid="insert_all_cols"/>
+        ) VALUES (
+        #{rmbAmount},
+        #{amount},
+        #{status},
+        0,
+        <if test="createdDate == null">
+            current_timestamp(),
+        </if>
+        <if test="createdDate != null">
+            #{createdDate},
+        </if>
+        current_timestamp(),
+        #{createdBy},
+        #{updatedBy},
+        1
+        )
+    </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO u_recharge_item(
+            <if test="rmbAmount != null">
+                u_recharge_item.rmb_amount,
+            </if>
+            <if test="amount != null">
+                u_recharge_item.amount,
+            </if>
+            <if test="status != null">
+                u_recharge_item.status,
+            </if>
+            u_recharge_item.deleted_flag,
+            u_recharge_item.created_date,
+            u_recharge_item.updated_date,
+            u_recharge_item.created_by,
+            u_recharge_item.updated_by,
+            u_recharge_item.version
+        ) VALUES (
+        <if test="rmbAmount != null">
+            #{rmbAmount},
+        </if>
+        <if test="amount != null">
+            #{amount},
+        </if>
+        <if test="status != null">
+            #{status},
+        </if>
+        0,
+        current_timestamp(),
+        current_timestamp(),
+        #{createdBy},
+        #{updatedBy},
+        1
+        )
+    </insert>
+    <insert id="batchInsert">
+        INSERT INTO u_recharge_item(
+        <include refid="insert_all_cols" />
+        ) VALUES
+        <foreach item="item" index="index" collection="list" open="" separator="," close="">
+            (
+            #{item.rmbAmount},
+            #{item.amount},
+            #{item.status},
+            0,
+            current_timestamp(),
+            current_timestamp(),
+            #{item.createdBy},
+            #{item.updatedBy},
+            1
+            )
+        </foreach>
+    </insert>
+    <insert id="insertWithId">
+        INSERT INTO u_recharge_item(id,<include refid="insert_all_cols"/>)
+        VALUES
+        (#{id},
+        #{rmbAmount},
+        #{amount},
+        #{status},
+        0,
+        current_timestamp(),
+        current_timestamp(),
+        #{createdBy},
+        #{updatedBy},
+        1
+        )
+    </insert>
+    <insert id="batchInsertWithId">
+        INSERT INTO u_recharge_item(id,<include refid="insert_all_cols"/>)
+        VALUES
+        <foreach item="item" index="index" collection="list" open="" separator="," close="">
+            (
+            #{item.id},
+            #{item.rmbAmount},
+            #{item.amount},
+            #{item.status},
+            0,
+            current_timestamp(),
+            current_timestamp(),
+            #{item.createdBy},
+            #{item.updatedBy},
+            1
+            )
+        </foreach>
+    </insert>
+    <update id="update">
+        update u_recharge_item
+        <set>
+            rmb_amount = #{rmbAmount},
+            amount = #{amount},
+            status = #{status},
+            version = version + 1,
+            updated_date = current_timestamp(),
+            updated_by=#{updatedBy}
+        </set>
+        where u_recharge_item.id = #{id}
+    </update>
+    <update id="updateSelective">
+        update u_recharge_item
+        <set>
+            <if test="rmbAmount != null">
+                rmb_amount = #{rmbAmount},
+            </if>
+            <if test="amount != null">
+                amount = #{amount},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            version = version + 1,
+            updated_date = current_timestamp(),
+            updated_by=#{updatedBy}
+        </set>
+        where u_recharge_item.id = #{id}
+    </update>
+    <delete id="delete">
+        update u_recharge_item set deleted_flag = 1
+        <include refid="where_all"/>
+    </delete>
+    <delete id="deleteById">
+        update u_recharge_item set deleted_flag = 1 where u_recharge_item.id = #{id}
+    </delete>
+    <delete id="deleteCompletely">
+        delete from u_recharge_item
+        <include refid="where_all"/>
+    </delete>
+    <delete id="deleteByIdCompletely">
+        delete from u_recharge_item where u_recharge_item.id = #{id}
+    </delete>
+</mapper>

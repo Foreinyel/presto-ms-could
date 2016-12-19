@@ -12,4 +12,7 @@ CREATE TABLE `presto`.`b_order_detail` (
   UNIQUE INDEX `id_UNIQUE` (`id` ASC))
   ENGINE = InnoDB
 	DEFAULT CHARACTER SET = utf8
-	COMMENT = '订单行表'
+	COMMENT = '订单行表';
+
+	ALTER TABLE `presto`.`b_order_detail`
+ADD COLUMN `price` DECIMAL(20,4) NULL DEFAULT 0 COMMENT '书籍价格' AFTER `user_book_id`;

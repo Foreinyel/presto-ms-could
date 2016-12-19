@@ -3,9 +3,10 @@
 <mapper namespace="com.presto.api.order.entity.OrderDetail">
     <resultMap type="com.presto.api.order.entity.OrderDetail" id="result"/>
     <sql id="select_all_cols">
-        b_order_detail.ID,
+        b_order_detail.id,
         b_order_detail.order_id as orderId,
         b_order_detail.user_book_id as userBookId,
+        b_order_detail.price as price,
         b_order_detail.created_date as createdDate,
         b_order_detail.updated_date as updatedDate,
         b_order_detail.created_by as createdBy,
@@ -15,6 +16,7 @@
     <sql id="insert_all_cols">
         b_order_detail.order_id,
         b_order_detail.user_book_id,
+        b_order_detail.price,
         b_order_detail.deleted_flag,
         b_order_detail.created_date,
         b_order_detail.updated_date,
@@ -32,6 +34,9 @@
         </if>
         <if test="cond.userBookId != null">
             AND b_order_detail.user_book_id = #{cond.userBookId}
+        </if>
+        <if test="cond.price != null">
+            AND b_order_detail.price = #{cond.price}
         </if>
         <if test="cond.version != null">
             AND b_order_detail.version = #{cond.version}
@@ -58,7 +63,7 @@
     <select id="select" resultMap="result">
         select <include refid="select_all_cols"/>
         FROM b_order_detail
-        WHERE deleted_flag = 0 and b_order_detail.ID=#{id}
+        WHERE deleted_flag = 0 and b_order_detail.id=#{id}
         <if test="lock">
             FOR UPDATE
         </if>
@@ -88,6 +93,7 @@
         ) VALUES (
         #{orderId},
         #{userBookId},
+        #{price},
         0,
         <if test="createdDate == null">
             current_timestamp(),
@@ -109,6 +115,9 @@
             <if test="userBookId != null">
                 b_order_detail.user_book_id,
             </if>
+            <if test="price != null">
+                b_order_detail.price,
+            </if>
             b_order_detail.deleted_flag,
             b_order_detail.created_date,
             b_order_detail.updated_date,
@@ -121,6 +130,9 @@
         </if>
         <if test="userBookId != null">
             #{userBookId},
+        </if>
+        <if test="price != null">
+            #{price},
         </if>
         0,
         current_timestamp(),
@@ -138,6 +150,7 @@
             (
             #{item.orderId},
             #{item.userBookId},
+            #{item.price},
             0,
             current_timestamp(),
             current_timestamp(),
@@ -148,11 +161,12 @@
         </foreach>
     </insert>
     <insert id="insertWithId">
-        INSERT INTO b_order_detail(ID,<include refid="insert_all_cols"/>)
+        INSERT INTO b_order_detail(id,<include refid="insert_all_cols"/>)
         VALUES
         (#{id},
         #{orderId},
         #{userBookId},
+        #{price},
         0,
         current_timestamp(),
         current_timestamp(),
@@ -162,13 +176,14 @@
         )
     </insert>
     <insert id="batchInsertWithId">
-        INSERT INTO b_order_detail(ID,<include refid="insert_all_cols"/>)
+        INSERT INTO b_order_detail(id,<include refid="insert_all_cols"/>)
         VALUES
         <foreach item="item" index="index" collection="list" open="" separator="," close="">
             (
             #{item.id},
             #{item.orderId},
             #{item.userBookId},
+            #{item.price},
             0,
             current_timestamp(),
             current_timestamp(),
@@ -183,6 +198,7 @@
         <set>
             order_id = #{orderId},
             user_book_id = #{userBookId},
+            price = #{price},
             version = version + 1,
             updated_date = current_timestamp(),
             updated_by=#{updatedBy}
@@ -197,6 +213,9 @@
             </if>
             <if test="userBookId != null">
                 user_book_id = #{userBookId},
+            </if>
+            <if test="price != null">
+                price = #{price},
             </if>
             version = version + 1,
             updated_date = current_timestamp(),

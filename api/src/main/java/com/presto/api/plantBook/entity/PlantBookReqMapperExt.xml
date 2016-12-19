@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.presto.api.plantBook.entity.PlantBookReq">
+    <select id="findAllNewReqs" resultType="com.presto.api.plantBook.ro.PlantBookReqRO">
+      SELECT t1.id,
+	   t1.status,
+       t1.plant_type as plantType,
+       t1.plant_method as plantMethod,
+       t1.book_id as bookId,
+       t1.book_name as bookName,
+       t1.book_author as bookAuthor,
+       t1.book_press as bookPress,
+       t1.book_isbn as bookIsbn,
+       t1.book_img_url as bookImgUrl,
+       t1.created_date as createdDate,
+       t2.id as userId,
+       t2.mobile as mobile,
+       t2.name as name
+      FROM b_plant_book_req t1,u_user t2
+      where t1.user_id = t2.id
+      and t1.plant_Method = 2
+      and t1.status = 0
+      and t1.deleted_flag = 0
+      and t2.deleted_flag = 0
+      order by t1.created_date
+    </select>
+</mapper>
