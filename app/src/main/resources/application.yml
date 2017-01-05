@@ -2,7 +2,7 @@ spring:
     profiles:
       active: dev
     application:
-      name: ms-cloud
+      name: ms-app
     datasource:
       name: presto
       url: jdbc:mysql://120.77.16.217:3306/presto

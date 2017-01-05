@@ -1,6 +1,6 @@
 spring:
     application:
-      name: ms-cloud
+      name: ms-app
     datasource:
       name: presto
       url: jdbc:mysql://10.26.220.94:3306/presto
