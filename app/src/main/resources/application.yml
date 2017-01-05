@@ -26,4 +26,4 @@ spring:
       maxOpenPreparedStatements: 20
 
 server:
-  port: 8080
+  port: 7777
